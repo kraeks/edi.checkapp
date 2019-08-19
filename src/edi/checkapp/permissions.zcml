@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="edi.checkapp.AddFrage"
+        title="edi.checkapp: Add Frage"
+    />
+
+
+    <permission
         id="edi.checkapp.AddFragebogen"
         title="edi.checkapp: Add Fragebogen"
     />
