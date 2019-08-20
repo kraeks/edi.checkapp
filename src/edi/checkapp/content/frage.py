@@ -90,7 +90,8 @@ class IFrage(model.Schema):
                                value_type=DictRow(title=u"Optionen", schema=IAnswerOptions),
                                default=listdefault)
 
-    farbe = schema.Bool(title=u"Hier markieren, wenn die Antwortoptionen im Farbschema dargestellt werden sollen")
+    tipp = RichText(title=u"Hinweis zur Fragestellung",
+                     description=u"Bitte bearbeiten Sie hier einen Hinweis zur Frage")
 
 
 @implementer(IFrage)
