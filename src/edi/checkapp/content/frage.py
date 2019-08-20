@@ -7,10 +7,13 @@ from plone.supermodel.directives import fieldset
 from z3c.form.browser.radio import RadioFieldWidget
 from plone import api as ploneapi
 from z3c.relationfield.schema import RelationChoice, RelationList
-from plone.app.vocabularies.catalog import CatalogSource
 from zope.interface import provider
+from plone.autoform import directives as form
 from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
+from plone.app.vocabularies.catalog import CatalogSource
 from zope import schema
 from zope.interface import implementer
 from zope.component import getUtility
@@ -18,9 +21,15 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 dictdefault={'ja':u'', 'unbekannt':u'', 'nein':u''}
 
+listdefault=[
+             {u'antwort':u'ja', u'aktion':u'', u'color':u'#555555'},
+             {u'antwort':u'unbekannt', u'aktion':u'', u'color':u'#555555'},
+             {u'antwort':u'nein', u'aktion':u'', u'color':u'#555555'},
+            ]
+
 @provider(IContextSourceBinder)
 def possibleQuestionsOrPages(context):
-    brains = ploneapi.content.find(portal_type=[u'Document', u'Frage'])
+    brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'])
     terms = []
     if brains:
         for i in brains:
@@ -40,6 +49,29 @@ def possibleThemen(context):
             terms.append(SimpleVocabulary.createTerm(i,mytoken,i))
     return SimpleVocabulary(terms)
 
+colorterms = [
+         SimpleTerm(u'#555555', u'#555555', u'siguv-grau'),
+         SimpleTerm(u'#004994', u'#004994', u'siguv-blau'),
+         SimpleTerm(u'#0095DB', u'#0095DB', u'siguv-cyan'),
+         SimpleTerm(u'#51AE31', u'#51AE31', u'siguv-grün'),
+         SimpleTerm(u'#F39200', u'#F39200', u'siguv-orange'),
+         SimpleTerm(u'#D40F14', u'#D40F14', u'siguv-rot'),
+         SimpleTerm(u'#B80D78', u'#B80D78', u'siguv-violett'),
+         SimpleTerm(u'#FFCC00', u'#FFCC00', u'siguv-gelb'),
+        ]
+SiguvColors = SimpleVocabulary(colorterms)
+
+
+class IAnswerOptions(model.Schema):
+    antwort = schema.TextLine(title=u"Antwortoption")
+
+    aktion = RelationChoice(title=u"Aktion",
+                            source=CatalogSource(),
+                            required=False)
+
+    color = schema.Choice(title=u"Farbe",
+                          source=SiguvColors,
+                          required=False)
 
 class IFrage(model.Schema):
     """ Marker interface and Dexterity Python Schema for Frage
@@ -52,15 +84,11 @@ class IFrage(model.Schema):
                           source=possibleThemen,
                           required=False)
 
-    optionen = schema.Dict(title=u"Anwortoptionen",
-                           key_type=schema.TextLine(title=u"Antwort"),
-                           value_type=schema.Choice(title=u"Nächste Aktion",
-                                                    description=u"Ohne Auswahl wird die nächste Frage der Liste angezeigt",
-                                                    source=possibleQuestionsOrPages,
-                                                    required=False),
-                           default=dictdefault,
-                           )
-
+    form.widget('optionen', DataGridFieldFactory)
+    optionen = schema.List(title=u"Antwortoptionen",
+                               required=True,
+                               value_type=DictRow(title=u"Optionen", schema=IAnswerOptions),
+                               default=listdefault)
 
     farbe = schema.Bool(title=u"Hier markieren, wenn die Antwortoptionen im Farbschema dargestellt werden sollen")
 
