@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="edi.checkapp.AddHinweistext"
+        title="edi.checkapp: Add Hinweistext"
+    />
+
+
+    <permission
         id="edi.checkapp.AddFrage"
         title="edi.checkapp: Add Frage"
     />
