@@ -44,4 +44,27 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
+   <plone:CORSPolicy
+     for="edi.checkapp.content.fragebogen.IFragebogen"
+     layer="edi.checkapp.interfaces.IEdiCheckappLayer"
+     allow_origin="*"
+     allow_methods="GET"
+     />
+
+   <plone:CORSPolicy
+     for="edi.checkapp.content.frage.IFrage"
+     layer="edi.checkapp.interfaces.IEdiCheckappLayer"
+     allow_origin="*"
+     allow_methods="GET"
+     />
+
+   <plone:CORSPolicy
+     allow_origin="*"
+     allow_methods="DELETE,GET,OPTIONS,PATCH,POST,PUT"
+     allow_credentials="true"
+     expose_headers="Content-Length,X-My-Header"
+     allow_headers="Accept,Authorization,Content-Type,X-Custom-Header"
+     max_age="3600"
+     />
+
 </configure>
