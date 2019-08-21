@@ -34,8 +34,8 @@ def possibleQuestionsOrPages(context):
     if brains:
         for i in brains:
             vocabtitle = "%s (%s)" %(i.Title, i.portal_type)
-            terms.append(SimpleVocabulary.createTerm(i.UID, i.UID, vocabtitle))
-    return SimpleVocabulary(terms)
+            terms.append(SimpleVocabulary.createTerm(i.getURL(), i.UID, vocabtitle))
+    return SimpleVocabulary(terms)        
 
 
 @provider(IContextSourceBinder)
@@ -65,9 +65,9 @@ SiguvColors = SimpleVocabulary(colorterms)
 class IAnswerOptions(model.Schema):
     antwort = schema.TextLine(title=u"Antwortoption")
 
-    aktion = RelationChoice(title=u"Aktion",
-                            source=CatalogSource(),
-                            required=False)
+    aktion = schema.Choice(title=u"Aktion",
+                           source=possibleQuestionsOrPages,
+                           required=False)
 
     color = schema.Choice(title=u"Farbe",
                           source=SiguvColors,
@@ -91,7 +91,8 @@ class IFrage(model.Schema):
                                default=listdefault)
 
     tipp = RichText(title=u"Hinweis zur Fragestellung",
-                     description=u"Bitte bearbeiten Sie hier einen Hinweis zur Frage")
+                     description=u"Bitte bearbeiten Sie hier einen Hinweis zur Frage",
+                     required=False)
 
 
 @implementer(IFrage)
