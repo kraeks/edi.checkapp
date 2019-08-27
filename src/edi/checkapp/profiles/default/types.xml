@@ -5,4 +5,5 @@
   <object meta_type="Dexterity FTI" name="Fragebogen"/>
   <object meta_type="Dexterity FTI" name="Frage"/>
   <object meta_type="Dexterity FTI" name="Hinweistext"/>
+  <object meta_type="Dexterity FTI" name="Benutzerordner"/>
 </object>
