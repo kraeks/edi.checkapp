@@ -3,6 +3,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="edi.checkapp">
 
   <i18n:registerTranslations directory="locales" />
@@ -44,6 +45,7 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
+<!--
    <plone:CORSPolicy
      for="edi.checkapp.content.fragebogen.IFragebogen"
      layer="edi.checkapp.interfaces.IEdiCheckappLayer"
@@ -57,5 +59,20 @@
      allow_origin="*"
      allow_methods="GET"
      />
+-->
+
+  <browser:page
+      name="checklistdata"
+      for="*"
+      class=".changedata.ChecklistData"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="checklistlogin"
+      for="*"
+      class=".changedata.ChecklistLogin"
+      permission="zope2.View"
+      />
 
 </configure>

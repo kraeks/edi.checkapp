@@ -14,6 +14,7 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from plone.app.vocabularies.catalog import CatalogSource
+from z3c.form.interfaces import NOVALUE
 from zope import schema
 from zope.interface import implementer
 from zope.component import getUtility
@@ -22,9 +23,9 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 dictdefault={'ja':u'', 'unbekannt':u'', 'nein':u''}
 
 listdefault=[
-             {u'antwort':u'ja', u'aktion':u'', u'color':u'#555555'},
-             {u'antwort':u'unbekannt', u'aktion':u'', u'color':u'#555555'},
-             {u'antwort':u'nein', u'aktion':u'', u'color':u'#555555'},
+             {u'antwort':u'ja', u'aktion':None, u'color':u'#51AE31'},
+             {u'antwort':u'unbekannt', u'aktion':None, u'color':u'#F39200'},
+             {u'antwort':u'nein', u'aktion':None, u'color':u'#D40F14'},
             ]
 
 @provider(IContextSourceBinder)
