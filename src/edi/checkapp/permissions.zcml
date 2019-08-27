@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="edi.checkapp.AddErgebnisdaten"
+        title="edi.checkapp: Add Ergebnisdaten"
+    />
+
+
+    <permission
         id="edi.checkapp.AddBenutzerordner"
         title="edi.checkapp: Add Benutzerordner"
     />

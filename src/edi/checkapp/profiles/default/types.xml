@@ -6,4 +6,6 @@
   <object meta_type="Dexterity FTI" name="Frage"/>
   <object meta_type="Dexterity FTI" name="Hinweistext"/>
   <object meta_type="Dexterity FTI" name="Benutzerordner"/>
+  <object meta_type="Dexterity FTI" name="Checkliste"/>
+  <object meta_type="Dexterity FTI" name="Ergebnisdaten"/>
 </object>
