@@ -22,8 +22,7 @@
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
     <element value="Ergebnisdaten" />
-        <element value="Checkliste" />
-    <element value="Dokument" />
+    <element value="Checkliste" />
   </property>
   <!-- Schema, class and security -->
   <property name="add_permission">edi.checkapp.AddBenutzerordner</property>

@@ -1,60 +1,29 @@
 # -*- coding: utf-8 -*-
-# from plone.app.textfield import RichText
-# from plone.autoform import directives
 from plone.dexterity.content import Item
-# from plone.namedfile import field as namedfile
 from plone.supermodel import model
-# from plone.supermodel.directives import fieldset
-# from z3c.form.browser.radio import RadioFieldWidget
-# from zope import schema
+from zope import schema
 from zope.interface import implementer
-
-
-# from edi.checkapp import _
 
 
 class IErgebnisdaten(model.Schema):
     """ Marker interface and Dexterity Python Schema for Ergebnisdaten
     """
-    # If you want, you can load a xml model created TTW here
-    # and customize it in Python:
 
-    # model.load('ergebnisdaten.xml')
+    maschnr = schema.TextLine(title=u"Maschinen-Nummer", required=False)
 
-    # directives.widget(level=RadioFieldWidget)
-    # level = schema.Choice(
-    #     title=_(u'Sponsoring Level'),
-    #     vocabulary=LevelVocabulary,
-    #     required=True
-    # )
+    hersteller = schema.TextLine(title=u"Hersteller der Maschine", required=False)
 
-    # text = RichText(
-    #     title=_(u'Text'),
-    #     required=False
-    # )
+    fragebogen = schema.TextLine(title=u"ID des Frageboges", required=True)
 
-    # url = schema.URI(
-    #     title=_(u'Link'),
-    #     required=False
-    # )
+    fortschritt = schema.Float(title=u"Fortschritt des Fragebogens", required=False)
 
-    # fieldset('Images', fields=['logo', 'advertisement'])
-    # logo = namedfile.NamedBlobImage(
-    #     title=_(u'Logo'),
-    #     required=False,
-    # )
+    notizen = schema.Dict(title=u"Notizen des Fragebogens", required=False,
+                        key_type=schema.TextLine(),
+                        value_type=schema.Text(),)
 
-    # advertisement = namedfile.NamedBlobImage(
-    #     title=_(u'Advertisement (Gold-sponsors and above)'),
-    #     required=False,
-    # )
-
-    # directives.read_permission(notes='cmf.ManagePortal')
-    # directives.write_permission(notes='cmf.ManagePortal')
-    # notes = RichText(
-    #     title=_(u'Secret Notes (only for site-admins)'),
-    #     required=False
-    # )
+    daten = schema.Dict(title=u"Daten des Fragebogens", required=False,
+                        key_type=schema.TextLine(),
+                        value_type=schema.Dict(key_type=schema.TextLine(), value_type=schema.TextLine()))
 
 
 @implementer(IErgebnisdaten)
