@@ -21,6 +21,9 @@ class IErgebnisdaten(model.Schema):
                         key_type=schema.TextLine(),
                         value_type=schema.Text(),)
 
+    history = schema.List(title=u"Historie der aufgerufenen Fragen", required=True,
+                          value_type = schema.TextLine())
+
     daten = schema.Dict(title=u"Daten des Fragebogens", required=False,
                         key_type=schema.TextLine(),
                         value_type=schema.Dict(key_type=schema.TextLine(), value_type=schema.TextLine()))

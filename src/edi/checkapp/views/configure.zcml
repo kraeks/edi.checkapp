@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="edi.checkapp">
+
+  -*- extra stuff goes here -*-
+
+  <browser:page
+     name="frage-ansicht"
+     for="Products.CMFCore.interfaces.IFolderish"
+     class=".frage_ansicht.FrageAnsicht"
+     template="frage-ansicht.pt"
+     permission="zope2.View"
+     />
+
+
+</configure>

@@ -37,12 +37,12 @@ class ChecklistData(BrowserView):
             body_unicode = self.request.get('BODY').decode('utf-8')
             data = json.loads(body_unicode)
             if data:
-                contentid = idnormalizer.normalize(maschine)
+                contentid = idnormalizer.normalize(data.get('maschine').get('title'))
                 mycontext = self.context[data.get('keyword')]
                 checkdaten = {}
                 checkdaten[data.get('id')] = data.get('optionen')
                 notizdaten = {}
-                notizdaten[data.get('id')] = data.get('notiz')]
+                notizdaten[data.get('id')] = data.get('notiz', u'')
                 if not mycontext.has_key(contentid):
                     obj = api.content.create(
                         type='Ergebnisdaten',
@@ -51,15 +51,27 @@ class ChecklistData(BrowserView):
                         maschnr = data.get('maschine').get('maschnr'),
                         hersteller = data.get('maschine').get('hersteller'),
                         fragebogen = data.get('fragebogen'),
+                        history = [data.get('id')],
                         notizen = notizdaten,
+                        fortschritt = float(data.get('fortschritt', 0.0)),
                         daten = checkdaten,
                         container=mycontext)
                 else:
                     obj = mycontext[contentid]
                     checkdaten = obj.daten
                     checkdaten[data.get('id')] = data.get('optionen')
+                    obj.daten = checkdaten
+                    history = obj.history
+                    if not history:
+                        history = []
+                    history.append(data.get('id'))
+                    obj.history = history
                     notizdaten = obj.notizen
-                    notizdaten[data.get('id')] = data.get('notiz')
+                    if not notizdaten:
+                        notizdaten = {}
+                    notizdaten[data.get('id')] = data.get('notiz', u'')
+                    obj.notizen = notizdaten
+                    obj.fortschritt = data.get('fortschritt', 0.0)
         retdict = data
         payload = jsonlib.write(retdict)
         return payload
