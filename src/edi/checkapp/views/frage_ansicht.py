@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from edi.checkapp import _
 from Products.Five.browser import BrowserView
-
-# from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from edi.checkapp.content.frage import possibleQuestionsOrPages, SiguvColors
 
 class FrageAnsicht(BrowserView):
-    # If you want to define a template here, please remove the template from
-    # the configure.zcml registration of this view.
-    # template = ViewPageTemplateFile('frage-ansicht.pt')
 
-    def __call__(self):
-        # Implement your own actions:
-        self.msg = _(u'A small message')
-        return self.index()
+    def getOptionen(self):
+        results = []
+        myoptionen = self.context.optionen
+        for i in myoptionen:
+            result = {}
+            result['antwort'] = i.get('antwort')
+            result['aktion'] = ''
+            if i.get('aktion'):
+                result['aktion'] = possibleQuestionsOrPages(self.context).getTerm(i.get('aktion')).title
+            result['color'] = SiguvColors.getTerm(i.get('color')).title
+            results.append(result)
+        return results
+        

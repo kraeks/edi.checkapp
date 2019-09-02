@@ -7,8 +7,8 @@
   -*- extra stuff goes here -*-
 
   <browser:page
-     name="frage-ansicht"
-     for="Products.CMFCore.interfaces.IFolderish"
+     name="view"
+     for="edi.checkapp.content.frage.IFrage"
      class=".frage_ansicht.FrageAnsicht"
      template="frage-ansicht.pt"
      permission="zope2.View"
