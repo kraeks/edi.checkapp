@@ -7,6 +7,14 @@
   -*- extra stuff goes here -*-
 
   <browser:page
+     name="antwort-view"
+     for="Products.CMFCore.interfaces.IFolderish"
+     class=".antwort_view.AntwortView"
+     template="antwort-view.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
      name="view"
      for="edi.checkapp.content.frage.IFrage"
      class=".frage_ansicht.FrageAnsicht"
