@@ -17,6 +17,8 @@ class IFragebogen(model.Schema):
     """ Marker interface and Dexterity Python Schema for Fragebogen
     """
 
+    fbid = schema.TextLine(title=u"Kürzel oder Nummer des Fragebogens")
+
     themenbereiche = schema.List(title=u'Themenbereiche',
                                  description=u'Geben Sie hier die Themenbereiche an, zu denen die Fragen gruppiert werden sollen.',
                                  value_type=schema.TextLine(),

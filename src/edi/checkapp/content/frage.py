@@ -28,14 +28,18 @@ listdefault=[
              {u'antwort':u'nein', u'aktion':None, u'color':u'#D40F14'},
             ]
 
+
 @provider(IContextSourceBinder)
 def possibleQuestionsOrPages(context):
     brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'])
     terms = []
     if brains:
         for i in brains:
-            vocabtitle = "%s (%s)" %(i.Title, i.portal_type)
+            obj = i.getObject()
+            fragebogen = obj.fbid
+            vocabtitle = "%s-%s (%s)" %(fragebogen, i.Title, i.portal_type)
             terms.append(SimpleVocabulary.createTerm(i.getURL(), i.UID, vocabtitle))
+    terms.sort(key=lambda x: x.title)
     return SimpleVocabulary(terms)        
 
 
@@ -77,6 +81,8 @@ class IAnswerOptions(model.Schema):
 class IFrage(model.Schema):
     """ Marker interface and Dexterity Python Schema for Frage
     """
+
+    fbid = schema.TextLine(title=u"Kürzel oder Nummer des Fragebogens")
 
     frage = RichText(title=u"Fragestellung",
                      description=u"Bitte bearbeiten Sie hier die Frage für die Checkliste")

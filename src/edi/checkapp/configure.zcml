@@ -77,4 +77,11 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      name="pdfdownload"
+      for="*"
+      class=".changedata.PDFDownload"
+      permission="zope2.View"
+      />
+
 </configure>

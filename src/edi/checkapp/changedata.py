@@ -1,3 +1,8 @@
+# -*- coding:utf-8 -*-
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm, mm
+from reportlab.pdfbase.ttfonts import TTFont
 from Products.Five import BrowserView
 from plone.i18n.normalizer import idnormalizer
 from plone import api
@@ -17,7 +22,9 @@ class ChecklistLogin(BrowserView):
         m = hashlib.md5()
         m.update(datainput)
         keyword = m.hexdigest()
+        data['created'] = False
         if not self.context.has_key(keyword):
+            data['created'] = True
             obj = api.content.create(
               type='Benutzerordner',
               id = keyword,
@@ -75,3 +82,38 @@ class ChecklistData(BrowserView):
         retdict = data
         payload = jsonlib.write(retdict)
         return payload
+
+
+class PDFDownload(BrowserView):
+
+    def createpdf(self, contentid):
+        dateiname = '/tmp/%s.pdf' % contentid
+        c = canvas.Canvas(dateiname, pagesize=A4)
+        c.setAuthor(u"Pascal Daniel Paul")
+        c.setTitle(u"Elektronische Unfallanzeige")
+        return c
+
+    def drawpdf(self, c, mycontext):
+        schriftart = "Helvetica"
+        schriftartfett = "Helvetica-Bold"
+        c.rect(2.5*cm, 1.8*cm, 17.2*cm, 25.4*cm)
+        c.drawString(10*cm, 15*cm, u'Hallo Welt')
+        return c
+
+    def savepdf(self, c):
+        c.showPage()
+        c.save()
+
+    def __call__(self):
+        maschine = self.request.get('maschine')
+        contentid = idnormalizer.normalize(maschine)
+        mycontext = self.context[contentid]
+        c = self.createpdf(contentid)
+        c = self.drawpdf(c, mycontext)
+        c = self.savepdf(c)
+        myfile = open('/tmp/%s.pdf' % contentid, 'r')
+        myfile.seek(0)
+        RESPONSE = self.request.response
+        RESPONSE.setHeader('content-type', 'application/pdf')
+        RESPONSE.setHeader('content-disposition', 'attachment; filename=%s.pdf' %contentid)
+        return myfile.read()
