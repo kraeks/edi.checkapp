@@ -15,8 +15,8 @@
      />
 
   <browser:page
-     name="antwort-view"
-     for="Products.CMFCore.interfaces.IFolderish"
+     name="view"
+     for="edi.checkapp.content.ergebnisdaten.IErgebnisdaten"
      class=".antwort_view.AntwortView"
      template="antwort-view.pt"
      permission="zope2.View"
