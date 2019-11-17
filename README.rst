@@ -6,39 +6,26 @@
 edi.checkapp
 ============
 
-Tell me what your product does
+Add-On für das Web-CMS Plone zur Konfiguration von Checklisten und zur Ablaufsteuerung einer Applikation.
+
 
 Features
 --------
 
-- Can be bullet points
-
-
-Examples
---------
-
-This add-on can be seen in action at the following sites:
-- Is there a page on the internet where everybody can see the features?
-
-
-Documentation
--------------
-
-Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
+- Checklisten können über das CMS Plone konfiguriert werden.
+- Die Fragestellungen der Checkliste können für ein Ablaufsteuerung in Abhängigkeit der Benutzereingagen verknüpft werden.
 
 
 Translations
 ------------
 
-This product has been translated into
-
-- Klingon (thanks, K'Plai)
+Das Produkt steht derzeit nur in Deutscher Sprache zur Verfügung.
 
 
 Installation
 ------------
 
-Install edi.checkapp by adding it to your buildout::
+Installation von edi.checkapp durch Hinzufügen zur buildout.cfg::
 
     [buildout]
 
@@ -54,16 +41,14 @@ and then running ``bin/buildout``
 Contribute
 ----------
 
-- Issue Tracker: https://github.com/collective/edi.checkapp/issues
-- Source Code: https://github.com/collective/edi.checkapp
-- Documentation: https://docs.plone.org/foo/bar
+- Issue Tracker: https://github.com/educorvi/edi.checkapp/issues
+- Source Code: https://github.com/educorvi/edi.checkapp
 
 
 Support
 -------
 
-If you are having issues, please let us know.
-We have a mailing list located at: project@example.com
+lars.walther@educorvi.de
 
 
 License
