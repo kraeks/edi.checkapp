@@ -49,6 +49,8 @@ setup(
         'plone.restapi',
         'plone.app.dexterity',
         'collective.z3cform.datagridfield',
+        'reportlab',
+        'jsonlib-python3',
     ],
     extras_require={
         'test': [
