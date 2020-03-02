@@ -38,7 +38,7 @@ def possibleQuestionsOrPages(context):
             obj = i.getObject()
             fragebogen = obj.fbid
             vocabtitle = "%s-%s (%s)" %(fragebogen, i.Title, i.portal_type)
-            terms.append(SimpleVocabulary.createTerm(i.getURL(), i.UID, vocabtitle))
+            terms.append(SimpleVocabulary.createTerm(i.UID, i.UID, vocabtitle))
     terms.sort(key=lambda x: x.title)
     return SimpleVocabulary(terms)        
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# from plone.app.textfield import RichText
+from plone.app.textfield import RichText
 # from plone.autoform import directives
 from plone.dexterity.content import Container
 # from plone.namedfile import field as namedfile
@@ -18,6 +18,8 @@ class IFragebogen(model.Schema):
     """
 
     fbid = schema.TextLine(title=u"Kürzel oder Nummer des Fragebogens")
+
+    text = RichText(title=u'Startseite des Fragebogens')
 
     themenbereiche = schema.List(title=u'Themenbereiche',
                                  description=u'Geben Sie hier die Themenbereiche an, zu denen die Fragen gruppiert werden sollen.',
