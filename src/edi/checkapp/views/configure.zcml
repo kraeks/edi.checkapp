@@ -7,6 +7,14 @@
   -*- extra stuff goes here -*-
 
   <browser:page
+    name="redaktions-ansicht"
+    for="Products.CMFCore.interfaces.IFolderish"
+    class=".redaktions_ansicht.RedaktionsAnsicht"
+    template="redaktions_ansicht.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page
      name="antworten-view"
      for="Products.CMFCore.interfaces.IFolderish"
      class=".antworten_view.AntwortenView"
