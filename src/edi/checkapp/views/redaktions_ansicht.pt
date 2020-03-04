@@ -1,13 +1,72 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="edi.checkapp"
-      metal:use-macro="context/main_template/macros/master">
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="edi.checkapp">
 <body>
-  <metal:block fill-slot="content-core">
-      <h2 i18n:translate="">Sample View</h2>
-      <p tal:content="view/msg">this gets replaced</p>
-  </metal:block>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-11">
+
+            <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+            <h1 class="documentFirstHeading" tal:content="context/title" />
+
+            <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+            <p class="documentDescription" tal:content="context/description" />
+
+            <div tal:replace="structure provider:plone.abovecontentbody" />
+
+            <div tal:condition="context/text" tal:replace="structure context/text/output" />
+
+            <div tal:replace="structure provider:plone.belowcontentbody" />
+
+             <hr>		    
+
+          </div>
+       
+          <div class="col-1">
+	    <a href="" tal:attributes="href python:context.absolute_url()+'/edit'"><span class="glyphicon glyphicon-pencil"/></a>
+          </div>
+
+        </div>
+
+	<div tal:repeat="thema view/get_themenbereiche" class="container">
+          <h2 tal:content="thema"/>
+	  <div tal:repeat="frage python:view.get_content().get(thema)" class="row mb-3">
+            <div class="col-11">
+              <h4 tal:content="frage/title"/>      
+	      <div tal:content="structure frage/frage"/>
+	      <h4>Nutzeraktionen</h4>
+	      <table class="table table-bordered">
+	        <th>Aktion</th>
+		<th>Weiter mit</th>
+                <tbody tal:define="optionen frage/optionen">
+	         <tr tal:repeat="option optionen">
+		   <td><button tal:content="string:${option/antwort}" tal:attributes="class string:btn btn-outline-${option/color}"/></td>
+                   <td><span tal:content="string:${option/aktion}"/></td>
+		 </tr>
+		</tbody>
+              </table>
+	      <h4 tal:condition="frage/tipp">Hinweis</h4>
+	      <div tal:condition="frage/tipp" tal:content="structure frage/tipp"/>
+	      <hr>
+	    </div>
+	    <div class="col-1"><a href="" tal:attributes="href frage/editurl"><span class="glyphicon glyphicon-pencil"/></a></div>
+          </div>
+	</div>  
+		              
+      </div>
+
+    </tal:main-macro>
+</metal:main>
+
 </body>
 </html>

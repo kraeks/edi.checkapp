@@ -7,8 +7,8 @@
   -*- extra stuff goes here -*-
 
   <browser:page
-    name="redaktions-ansicht"
-    for="Products.CMFCore.interfaces.IFolderish"
+    name="view"
+    for="edi.checkapp.content.fragebogen.IFragebogen"
     class=".redaktions_ansicht.RedaktionsAnsicht"
     template="redaktions_ansicht.pt"
     permission="zope2.View"

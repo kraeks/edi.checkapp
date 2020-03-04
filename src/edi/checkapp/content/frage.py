@@ -55,14 +55,14 @@ def possibleThemen(context):
     return SimpleVocabulary(terms)
 
 colorterms = [
-         SimpleTerm(u'#555555', u'#555555', u'siguv-grau'),
-         SimpleTerm(u'#004994', u'#004994', u'siguv-blau'),
-         SimpleTerm(u'#0095DB', u'#0095DB', u'siguv-cyan'),
-         SimpleTerm(u'#51AE31', u'#51AE31', u'siguv-grün'),
-         SimpleTerm(u'#F39200', u'#F39200', u'siguv-orange'),
-         SimpleTerm(u'#D40F14', u'#D40F14', u'siguv-rot'),
-         SimpleTerm(u'#B80D78', u'#B80D78', u'siguv-violett'),
-         SimpleTerm(u'#FFCC00', u'#FFCC00', u'siguv-gelb'),
+         SimpleTerm(u'#555555', u'secondary', u'siguv-grau'),
+         SimpleTerm(u'#004994', u'primary', u'siguv-blau'),
+         SimpleTerm(u'#0095DB', u'info', u'siguv-cyan'),
+         SimpleTerm(u'#51AE31', u'success', u'siguv-grün'),
+         SimpleTerm(u'#F39200', u'warning', u'siguv-orange'),
+         SimpleTerm(u'#D40F14', u'danger', u'siguv-rot'),
+         SimpleTerm(u'#B80D78', u'dark', u'siguv-violett'),
+         SimpleTerm(u'#FFCC00', u'light', u'siguv-gelb'),
         ]
 SiguvColors = SimpleVocabulary(colorterms)
 
