@@ -46,24 +46,6 @@ def possibleQuestionsOrPages(context):
 
 
 
-@implementer
-class RegistrySource(object):
-
-    def __init__(self, key):
-        self.key = key
-
-    def __call__(self, context):
-        import pdb;pdb.set_trace()
-        registry = queryUtility(IRegistry)
-        terms = []
-
-        if registry is not None:
-            for value in registry.get(self.key, ()):
-                terms.append(SimpleVocabulary.createTerm(value, value.encode('utf-8'), value))
-
-        return SimpleVocabulary(terms)
-
-
 @provider(IContextSourceBinder)
 def possibleThemen(context):
     print('Themen')

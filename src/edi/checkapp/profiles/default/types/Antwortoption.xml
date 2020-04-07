@@ -1,68 +1,56 @@
 <?xml version="1.0"?>
 <object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    name="Fragestellung"
+    name="Antwortoption"
     meta_type="Dexterity FTI"
     i18n:domain="edi.checkapp">
 
   <!-- Basic properties -->
   <property
       i18n:translate=""
-      name="title">Fragestellung</property>
+      name="title">Antwortoption</property>
   <property
       i18n:translate=""
-      name="description">Fragestellung innerhalb des Fragebogens</property>
+      name="description">Antwortoption für Fragestellung des Fragebogens</property>
 
   <property name="allow_discussion">False</property>
-  <property name="factory">Fragestellung</property>
+  <property name="factory">Antwortoption</property>
   <property name="icon_expr"></property>
   <property name="link_target"></property>
 
   <!-- Hierarchy control -->
   <property name="global_allow">False</property>
-  <property name="filter_content_types">True</property>
-  <property name="allowed_content_types">
-    <element value="Antwortoption" />
-      <!--
-    <element value="Document" />
-    <element value="File" />
-  -->
-  </property>
   <!-- Schema, class and security -->
-  <property name="add_permission">edi.checkapp.AddFragestellung</property>
-  <property name="klass">edi.checkapp.content.fragestellung.Fragestellung</property>
+  <property name="add_permission">edi.checkapp.AddAntwortoption</property>
+  <property name="klass">edi.checkapp.content.antwortoption.Antwortoption</property>
   <property name="model_file"></property>
   <property name="model_source"></property>
-  <property name="schema">edi.checkapp.content.fragestellung.IFragestellung</property>
+  <property name="schema">edi.checkapp.content.antwortoption.IAntwortoption</property>
 
   <!-- Enabled behaviors -->
   <property name="behaviors" purge="false">
     <!-- Details about all standard behaviors following can be read at
          https://docs.plone.org/external/plone.app.dexterity/docs/reference/standard-behaviours.html
     -->
-    <element value="plone.namefromtitle"/>
-    <element value="plone.allowdiscussion"/>
-    <element value="plone.excludefromnavigation"/>
-    <element value="plone.shortname"/>
-    <element value="plone.ownership"/>
-    <element value="plone.publication"/>
-    <element value="plone.categorization"/>
-    <element value="plone.basic"/>
-    <element value="plone.locking" />
-    <!--<element value="plone.app.referenceablebehavior.referenceable.IReferenceable" />-->
+    <!-- <element value="plone.namefromtitle"/> -->
+    <!-- <element value="plone.allowdiscussion"/> -->
+    <!-- <element value="plone.excludefromnavigation"/> -->
+    <!-- <element value="plone.shortname"/> -->
+    <!-- <element value="plone.ownership"/> -->
+    <!-- <element value="plone.publication"/> -->
+    <!-- <element value="plone.categorization"/> -->
+    <!-- <element value="plone.basic"/> -->
+    <!-- <element value="plone.locking" /> -->
+    <!-- <element value="plone.app.referenceablebehavior.referenceable.IReferenceable" />-->
     <!--<element value="plone.leadimage"/>-->
     <!--<element value="plone.relateditems"/>-->
     <!--<element value="plone.richtext"/>-->
     <!--<element value="plone.tableofcontents"/>-->
     <!--<element value="plone.versioning" />-->
     <!--<element value="plone.translatable" />-->
-    <!--<element value="plone.nextprevioustoggle" />-->
-    <!--<element value="plone.nextpreviousenabled" />-->
-    <!--<element value="plone.navigationroot" />-->
-    <!--<element value="plone.selectablecontrainstypes" />-->
   </property>
 
   <!-- View information -->
-  <property name="add_view_expr">string:${folder_url}/++add++Fragestellung</property>
+  <property name="add_view_expr">string:${folder_url}/++add++Antwortoption</property>
   <property name="default_view">view</property>
   <property name="default_view_fallback">False</property>
   <property name="immediate_view">view</property>
@@ -102,7 +90,7 @@
   <action
       action_id="edit"
       category="object"
-      condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+      condition_expr=""
       i18n:attributes="title"
       title="Edit"
       url_expr="string:${object_url}/edit"
