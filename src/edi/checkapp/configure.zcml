@@ -71,9 +71,30 @@
       />
 
   <browser:page
+      name="checkregister"
+      for="*"
+      class=".changedata.ChckRegister"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="checkkontakt"
+      for="*"
+      class=".changedata.ChckKontakt"
+      permission="zope2.View"
+      />
+
+  <browser:page
       name="checklistlogin"
       for="*"
       class=".changedata.ChecklistLogin"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="medialogin"
+      for="*"
+      class=".changedata.MediaLogin"
       permission="zope2.View"
       />
 

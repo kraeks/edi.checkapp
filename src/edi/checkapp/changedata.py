@@ -6,6 +6,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from Products.Five import BrowserView
 from plone.i18n.normalizer import idnormalizer
 from plone import api
+import requests
 import jsonlib
 import json
 import hashlib
@@ -31,6 +32,99 @@ class ChecklistLogin(BrowserView):
               title=keyword,
               container=self.context)
         data['keyword'] = keyword
+        payload = jsonlib.write(data)
+        return payload
+
+class MediaLogin(BrowserView):
+
+    def get_databases(self, token):
+        myheaders ={'Accept': 'application/json'}
+        myauth = ('admin', '!krks.d3print/edi_sicherinvestieren!')
+        response = requests.get('https://couch.kraeks.de/_all_dbs', headers=myheaders, auth=myauth)
+        databases = response.json()
+        compare = "listen_user_%s" %token
+        if compare in databases:
+            return True
+        return False
+
+    def create_database(self, token):
+        myheaders ={'Accept': 'application/json', 'Content-Type': 'application/json'}
+        myauth = ('admin', '!krks.d3print/edi_sicherinvestieren!')
+
+        database_url = 'https://couch.kraeks.de/listen_user_%s' %token
+        new_database = requests.put(database_url, headers=myheaders, auth=myauth)
+
+        newuser_url = 'https://couch.kraeks.de/_users/org.couchdb.user:%s' %token
+        data = {"name": token, "password": token, "roles": [], "type": "user"}
+        newuser = requests.put(newuser_url, headers=myheaders, auth=myauth, json=data)
+
+        security_url = 'https://couch.kraeks.de/listen_user_%s/_security' %token
+        data = {"admins":{"names":[], "roles":[]}, "members":{"names":[token], "roles":[]}}
+        security = requests.put(security_url, headers=myheaders, auth=myauth, json=data)
+        
+        if new_database.status_code == 200 and newuser.status_code == 200 and security.status_code == 200:
+            return True
+        return False
+
+    def __call__(self):
+        data = {}
+        body = self.request.get('BODY')
+        if body:
+            body_unicode = self.request.get('BODY').decode('utf-8')
+            data = json.loads(body_unicode)
+        username = data.get('username')
+        print(username)
+        password = data.get('password')
+        print(password)
+        #Authentication against SAP Backend##
+        auth = False
+        if username:
+            if u'@' in username and len(password) >= 8 :
+                auth = True
+        ####
+        data['token'] = False
+        data['database'] = False
+        if auth:
+            datainput = u"%s%s" %(api.portal.get().absolute_url(), username)
+            datainput = datainput.encode('utf-8')
+            m = hashlib.md5()
+            m.update(datainput)
+            token = m.hexdigest()
+            database = True
+            if not self.get_databases(token):
+                database = self.create_database(token)
+            data['token'] = token
+            data['database'] = database
+        payload = jsonlib.write(data)
+        return payload
+
+
+class ChckRegister(BrowserView):
+
+    def __call__(self):
+        data = {}
+        body = self.request.get('BODY')
+        if body:
+            body_unicode = self.request.get('BODY').decode('utf-8')
+            data = json.loads(body_unicode)
+        print(data)
+        #ToDo send RegisterData to SAP
+        data['registered'] = True
+        payload = jsonlib.write(data)
+        return payload
+
+
+class ChckKontakt(BrowserView):
+
+    def __call__(self):
+        data = {}
+        body = self.request.get('BODY')
+        if body:
+            body_unicode = self.request.get('BODY').decode('utf-8')
+            data = json.loads(body_unicode)
+        print(data)
+        #ToDo send KontaktData via Mail
+        data['sent'] = True
         payload = jsonlib.write(data)
         return payload
 

@@ -19,6 +19,7 @@ from zope import schema
 from zope.interface import implementer
 from zope.component import getUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from zope.interface import implementer
 
 dictdefault={'ja':u'', 'unbekannt':u'', 'nein':u''}
 
@@ -28,10 +29,11 @@ listdefault=[
              {u'antwort':u'nein', u'aktion':None, u'color':u'#D40F14'},
             ]
 
-
 @provider(IContextSourceBinder)
 def possibleQuestionsOrPages(context):
-    brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'])
+    print('Fragen')
+    print(context)
+    brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'], review_state="published")
     terms = []
     if brains:
         for i in brains:
@@ -43,8 +45,29 @@ def possibleQuestionsOrPages(context):
     return SimpleVocabulary(terms)        
 
 
+
+@implementer
+class RegistrySource(object):
+
+    def __init__(self, key):
+        self.key = key
+
+    def __call__(self, context):
+        import pdb;pdb.set_trace()
+        registry = queryUtility(IRegistry)
+        terms = []
+
+        if registry is not None:
+            for value in registry.get(self.key, ()):
+                terms.append(SimpleVocabulary.createTerm(value, value.encode('utf-8'), value))
+
+        return SimpleVocabulary(terms)
+
+
 @provider(IContextSourceBinder)
 def possibleThemen(context):
+    print('Themen')
+    print(context)
     terms = []
     normalizer = getUtility(IIDNormalizer)
     themenbereiche = context.themenbereiche
