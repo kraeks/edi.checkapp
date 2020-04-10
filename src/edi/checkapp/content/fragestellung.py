@@ -12,8 +12,8 @@ from zope.component import getUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 answertypes = [
-         SimpleTerm(u'choice', u'choice', u'Auswahl (bitte Antwortoptionen hinzufügen)'),
-         SimpleTerm(u'list', u'list', u'Mehrfachauswahl (bitte Antwortoptionen hinzufügen)'),
+         SimpleTerm(u'radio', u'radio', u'Auswahl (bitte Antwortoptionen hinzufügen)'),
+         SimpleTerm(u'checkbox', u'list', u'Mehrfachauswahl (bitte Antwortoptionen hinzufügen)'),
          SimpleTerm(u'integer', u'integer', u'Ganzzahl'),
          SimpleTerm(u'float', u'float', u'Gleitkommazahl'),
          SimpleTerm(u'textline', u'textline', u'Textzeile'),
@@ -52,7 +52,7 @@ class IFragestellung(model.Schema):
 
     antworttyp = schema.Choice(title=u"Wählen Sie eine Art der Antwort aus.",
                      source = Antworttypen,
-                     default = 'choice')
+                     default = 'radio')
 
     einheit = schema.TextLine(title=u"Einheit der Antwort (nur bei Ganzzahl oder Gleitkommazahl)",
                      description = u"Sie können hier eine Einheit für die Antwort angeben (z.B.: Ohm, Ampere, Volt)",

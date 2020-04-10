@@ -7,8 +7,8 @@
   -*- extra stuff goes here -*-
 
   <browser:page
-    name="option-view"
-    for="Products.CMFCore.interfaces.IFolderish"
+    name="view"
+    for="edi.checkapp.content.antwortoption.IAntwortoption"
     class=".option_view.OptionView"
     template="option_view.pt"
     permission="zope2.View"

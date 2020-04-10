@@ -8,7 +8,9 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope import schema
 from zope.interface import implementer
-from zope.interface import implementer
+from zope.interface import Invalid
+from zope.interface import invariant
+
 
 colorterms = [
          SimpleTerm(u'#555555', u'secondary', u'siguv-grau'),
@@ -40,7 +42,7 @@ class IAntwortoption(model.Schema):
 
     title = schema.TextLine(title=u"Antwortoption (Label)")
 
-    showlabel = schema.Bool(title="Label anzeigen/ausblenden" default=True, required=False)
+    showlabel = schema.Bool(title="Label anzeigen/ausblenden", default=True, required=False)
 
     zusatz = schema.Bool(title=u"Zusatzangabe ein-/ausschalten", required=False)
 
@@ -55,6 +57,13 @@ class IAntwortoption(model.Schema):
     color = schema.Choice(title=u"Farbe",
                           source=SiguvColors,
                           required=False)
+
+    @invariant
+    def address_invariant(data):
+        if data.zusatz:
+            if not data.label:
+                raise Invalid(u"Für Zusatzangaben ist ein Label erforderlich")
+
 
 @implementer(IAntwortoption)
 class Antwortoption(Item):

@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
-
 from edi.checkapp import _
 from Products.Five.browser import BrowserView
-
-# from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from edi.checkapp.views.formsnippets import option, option_group, option_group_label, option_group_label_einheit
 
 class OptionView(BrowserView):
-    # If you want to define a template here, please remove the template from
-    # the configure.zcml registration of this view.
-    # template = ViewPageTemplateFile('option_view.pt')
 
     def __call__(self):
-        # Implement your own actions:
-        self.msg = _(u'A small message')
+        if self.context.zusatz:
+            if self.context.showlabel and not self.context.einheit:
+                self.snippet = option_group_label(self.context)
+            elif self.context.showlabel and self.context.einheit:
+                self.snippet = option_group_label_einheit(self.context)
+            else:
+                self.snippet = option_group(self.context)
+        else:
+            self.snippet = option(self.context)
         return self.index()
