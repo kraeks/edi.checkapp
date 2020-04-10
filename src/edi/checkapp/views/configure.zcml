@@ -7,6 +7,14 @@
   -*- extra stuff goes here -*-
 
   <browser:page
+    name="option-view"
+    for="Products.CMFCore.interfaces.IFolderish"
+    class=".option_view.OptionView"
+    template="option_view.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page
     name="view"
     for="edi.checkapp.content.fragebogen.IFragebogen"
     class=".redaktions_ansicht.RedaktionsAnsicht"
