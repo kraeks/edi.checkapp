@@ -2,7 +2,7 @@
 
 from edi.checkapp import _
 from Products.Five.browser import BrowserView
-from plone import api
+from plone import api as ploneapi
 from edi.checkapp.content.frage import possibleQuestionsOrPages, SiguvColors
 
 # from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -17,7 +17,7 @@ class RedaktionsAnsicht(BrowserView):
         for i in self.context.getFolderContents():
             if i.portal_type == 'Frage':
                 obj = i.getObject()
-                entry={}
+                entry= {}
                 entry['title'] = obj.title
                 entry['frage'] = obj.frage.output
                 entry['tipp'] = ''
@@ -31,7 +31,7 @@ class RedaktionsAnsicht(BrowserView):
                     option['color'] = SiguvColors.getTerm(k['color']).token
                     option['aktion'] = u'nächste Frage'
                     if k.get('aktion'):
-                        aktion = api.content.get(UID=k['aktion'])
+                        aktion = ploneapi.content.get(UID=k['aktion'])
                         aktionstext = aktion.title
                         option['aktion'] = aktionstext
                     format_optionen.append(option)
@@ -39,6 +39,19 @@ class RedaktionsAnsicht(BrowserView):
                 entry['editurl'] = obj.absolute_url() + '/edit'
                 if obj.thema in themen:
                     themen[obj.thema].append(entry)
+            elif i.portal_type == 'Fragestellung':
+                obj = i.getObject()
+                entry = {}
+                entry['title'] = u''
+                entry['frage'] = u''
+                if obj.antworttyp in ['radio', 'checkbox']:
+                    entry['title'] = obj.title
+                if obj.frage:
+                    entry['frage'] = obj.frage.output
+                entry['snippet'] = ploneapi.content.get_view('fragestellung-view', obj, self.request).create_formmarkup()    
+
+
+
         return themen
 
     def get_themenbereiche(self):

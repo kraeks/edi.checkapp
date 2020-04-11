@@ -2,6 +2,7 @@
 from edi.checkapp import _
 from Products.Five.browser import BrowserView
 from edi.checkapp.content.fragestellung import possibleThemen
+from edi.checkapp.views.formsnippets import textline, textline_unit, textarea
 from plone import api as ploneapi
 
 class FragestellungView(BrowserView):
@@ -16,8 +17,15 @@ class FragestellungView(BrowserView):
     def create_formmarkup(self):
         if self.context.antworttyp in ['radio', 'checkbox']:
             return self.create_optionmarkup()
-        else:
-            return u'<p></p>'
+        if self.context.antworttyp == 'text':
+            return textline(self.context.getId(), self.context.title, self.context.antworttyp)
+        if self.context.antworttyp == 'number' and not self.context.einheit:
+            return textline(self.context.getId(), self.context.title, self.context.antworttyp)
+        if self.context.antworttyp == 'number' and self.context.einheit:
+            return textline_unit(self.context.getId(), self.context.title, self.context.antworttyp, self.context.einheit)
+        if self.context.antworttyp == 'textarea':
+            return textarea(self.context.getId(), self.context.title)
+        return u'<p>Error: es konnte kein Eingabefeld zugeordnet werden.</p>'
 
     def __call__(self):
         self.thema = possibleThemen(self.context).getTerm(self.context.thema).title

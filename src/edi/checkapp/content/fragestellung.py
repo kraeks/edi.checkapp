@@ -10,13 +10,14 @@ from zope import schema
 from zope.interface import implementer
 from zope.component import getUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from zope.interface import Invalid
+from zope.interface import invariant
 
 answertypes = [
          SimpleTerm(u'radio', u'radio', u'Auswahl (bitte Antwortoptionen hinzufügen)'),
-         SimpleTerm(u'checkbox', u'list', u'Mehrfachauswahl (bitte Antwortoptionen hinzufügen)'),
-         SimpleTerm(u'integer', u'integer', u'Ganzzahl'),
-         SimpleTerm(u'float', u'float', u'Gleitkommazahl'),
-         SimpleTerm(u'textline', u'textline', u'Textzeile'),
+         SimpleTerm(u'checkbox', u'checkbox', u'Mehrfachauswahl (bitte Antwortoptionen hinzufügen)'),
+         SimpleTerm(u'number', u'number', u'Zahlenwert'),
+         SimpleTerm(u'text', u'text', u'Textzeile'),
          SimpleTerm(u'textarea', u'textarea', u'Textfeld'),
         ]
 Antworttypen = SimpleVocabulary(answertypes)
@@ -41,14 +42,16 @@ class IFragestellung(model.Schema):
     """ Marker interface and Dexterity Python Schema for Frage
     """
 
-    title = schema.TextLine(title=u"Titel der Fragestellung (nur zur Sortierung in Ordnerübersichten)")
+    title = schema.TextLine(title=u"Titel der Fragestellung",
+                            description=u"Geben Sie hier Ihre Frage ein.")
 
     thema = schema.Choice(title=u"Auswahl des Themas für die Frage",
                           source=possibleThemen,
                           required=False)
 
-    frage = RichText(title=u"Fragestellung",
-                     description=u"Bitte bearbeiten Sie hier die Frage für die Checkliste")
+    frage = RichText(title=u"Formatierte Fragestellung",
+                     description=u"Alternativ können Sie hier eine formatierte Fragestellung für die Checkliste eingeben.",
+                     required=False)
 
     antworttyp = schema.Choice(title=u"Wählen Sie eine Art der Antwort aus.",
                      source = Antworttypen,
@@ -64,6 +67,12 @@ class IFragestellung(model.Schema):
     tipp = RichText(title=u"Hinweis zur Fragestellung",
                      description=u"Bitte bearbeiten Sie hier einen Hinweis zur Frage",
                      required=False)
+
+    @invariant
+    def einheit_invariant(data):
+        if data.einheit:
+            if data.antworttyp != 'number':
+                raise Invalid(u"Bei Angabe von Einheiten muss der Antworttyp Zahlenwert ausgewählt werden.")
 
     
 @implementer(IFragestellung)

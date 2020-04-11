@@ -24,6 +24,13 @@ colorterms = [
         ]
 SiguvColors = SimpleVocabulary(colorterms)
 
+fieldtypes = [
+         SimpleTerm(u'textline', u'textline', u'Textzeile'),
+         SimpleTerm(u'textarea', u'textarea', u'Textfeld'),
+        ]
+Feldtypen = SimpleVocabulary(fieldtypes)
+
+
 @provider(IContextSourceBinder)
 def possibleQuestionsOrPages(context):
     brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'], review_state="published")
@@ -40,13 +47,18 @@ def possibleQuestionsOrPages(context):
 
 class IAntwortoption(model.Schema):
 
-    title = schema.TextLine(title=u"Antwortoption (Label)")
+    title = schema.TextLine(title=u"Label der Antwortoption")
 
-    showlabel = schema.Bool(title="Label anzeigen/ausblenden", default=True, required=False)
+    showlabel = schema.Bool(title="Label anzeigen/ausblenden", default=True, required=False,
+                            description="Bei zusätzlichen Angaben kann in bestimmten Fällen auf das Label verzichtet werden.\
+                                         In diesen Fällen wird lediglich die Bezeichnung der Zusatzangabe angezeigt.")
 
     zusatz = schema.Bool(title=u"Zusatzangabe ein-/ausschalten", required=False)
 
     label = schema.TextLine(title="Bezeichnung der Zusatzangabe", required=False)
+
+    zusatzformat = schema.Choice(title="Feldtyp der zusätzlichen Angabe", required=True,
+                            source=Feldtypen, default='textline')    
 
     einheit = schema.TextLine(title=u"optional: Maßeinheit für Zusatzangabe", required=False)
 
@@ -59,7 +71,7 @@ class IAntwortoption(model.Schema):
                           required=False)
 
     @invariant
-    def address_invariant(data):
+    def zusatz_invariant(data):
         if data.zusatz:
             if not data.label:
                 raise Invalid(u"Für Zusatzangaben ist ein Label erforderlich")
