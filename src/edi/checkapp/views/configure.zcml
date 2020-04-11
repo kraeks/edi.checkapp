@@ -8,7 +8,7 @@
 
   <browser:page
     name="five-rules-view"
-    for="Products.CMFCore.interfaces.IFolderish"
+    for="edi.checkapp.content.fragebogen.IFragebogen"
     class=".five_rules_view.FiveRulesView"
     template="five_rules_view.pt"
     permission="zope2.View"

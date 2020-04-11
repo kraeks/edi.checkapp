@@ -15,12 +15,12 @@ from zope.interface import implementer
 # from edi.checkapp import _
 
 answertypes = [
-         SimpleTerm(u'choice', u'choice', u'Auswahl'),
-         SimpleTerm(u'list', u'list', u'Mehrfachauswahl'),
-         SimpleTerm(u'integer', u'integer', u'Ganzzahl'),
-         SimpleTerm(u'float', u'float', u'Gleitkommazahl'),
-         SimpleTerm(u'textline', u'textline', u'Textzeile'),
+         SimpleTerm(u'radio', u'radio', u'Auswahl'),
          SimpleTerm(u'textarea', u'textarea', u'Textfeld'),
+         SimpleTerm(u'text', u'text', u'Textzeile'),
+         SimpleTerm(u'number', u'number', u'Zahlenwert'),
+         SimpleTerm(u'datetime-local', u'datetime-local', u'Datum und Uhrzeit'),
+         SimpleTerm(u'date', u'date', u'Datum'),
         ]
 Antworttypen = SimpleVocabulary(answertypes)
 

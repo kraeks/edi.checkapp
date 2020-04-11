@@ -69,6 +69,7 @@
   <property name="immediate_view">view</property>
   <property name="view_methods">
     <element value="view"/>
+    <element value="five-rules-view"/>
   </property>
 
   <!-- Method aliases -->

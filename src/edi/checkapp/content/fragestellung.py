@@ -33,8 +33,12 @@ def possibleThemen(context):
         themenbereiche = []
     if themenbereiche:
         for i in themenbereiche:
-            mytoken = normalizer.normalize(i)
-            terms.append(SimpleVocabulary.createTerm(i,mytoken,i))
+            if '#' in i:
+                thema = i.split('#')[1]
+                mytoken = normalizer.normalize(thema)
+                terms.append(SimpleVocabulary.createTerm(thema,mytoken,thema))
+            else:    
+                terms.append(SimpleVocabulary.createTerm(i,mytoken,i))
     return SimpleVocabulary(terms)
 
 

@@ -1,17 +1,65 @@
 # -*- coding: utf-8 -*-
-
 from edi.checkapp import _
 from Products.Five.browser import BrowserView
-
-# from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from plone import api as ploneapi
+from edi.checkapp.content.frage import possibleQuestionsOrPages, SiguvColors
+from edi.checkapp.views.formsnippets import textline, textline_unit, textarea, select
+from zope.component import getUtility
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 class FiveRulesView(BrowserView):
-    # If you want to define a template here, please remove the template from
-    # the configure.zcml registration of this view.
-    # template = ViewPageTemplateFile('five_rules_view.pt')
 
-    def __call__(self):
-        # Implement your own actions:
-        self.msg = _(u'A small message')
-        return self.index()
+    def create_kopffragen(self):
+        normalizer = getUtility(IIDNormalizer)
+        kopffragen = ''
+        for i in self.context.kopffragen:
+            title = i.get('frage')
+            id = normalizer.normalize(title)
+            typ = i.get('antworttyp')
+            einheit = i.get('einheit')
+            optionen = i.get('optionen')
+            if typ == 'radio':
+                kopffragen += select(id, title, optionen)
+            elif typ in ['text', 'date', 'datetime-local']:
+                kopffragen += textline(id, title, typ)
+            elif typ == 'number' and not einheit:
+                kopffragen += textline(id, title, typ)
+            elif typ == 'number' and einheit:
+                kopffragen += textline_unit(id, title, typ, einheit)
+            elif typ == 'textarea':
+                kopffragen += textarea(id, title)
+        return kopffragen
+
+
+    def get_content(self):
+        themen = {}
+        for i in self.context.themenbereiche:
+            if '#' in i:
+                thema = i.split('#')[1]
+                themen[thema] = []
+            else:
+                themen[i] = []
+        for k in self.context.getFolderContents():
+            if k.portal_type == 'Fragestellung':
+                obj = k.getObject()
+                entry = {}
+                entry['title'] = u''
+                entry['frage'] = u''
+                if obj.antworttyp in ['radio', 'checkbox']:
+                    entry['title'] = obj.title
+                if obj.frage:
+                    entry['frage'] = obj.frage.output
+                entry['snippet'] = ploneapi.content.get_view('fragestellung-view', obj, self.request).create_formmarkup()    
+                entry['editurl'] = obj.absolute_url() + '/edit'
+                if obj.thema in themen:
+                    themen[obj.thema].append(entry)
+        return themen
+
+    def get_themenbereiche(self):
+        themenbereiche = []
+        for i in self.context.themenbereiche:
+            if '#' in i:
+                themenbereiche.append(i.split('#'))
+            else:
+                themenbereiche.append(('', i))
+        return themenbereiche

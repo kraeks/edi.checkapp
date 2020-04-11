@@ -1,13 +1,73 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="edi.checkapp"
-      metal:use-macro="context/main_template/macros/master">
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="edi.checkapp">
 <body>
-  <metal:block fill-slot="content-core">
-      <h2 i18n:translate="">Sample View</h2>
-      <p tal:content="view/msg">this gets replaced</p>
-  </metal:block>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+
+      <div class="container">
+
+        <div class="row">
+          <div class="col-12">
+
+            <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+            <div class="jumbotron jumbotron-fluid">
+              <div class="container">
+              <h1 class="display-4" tal:content="context/title"></h1>
+              <p class="lead">Checkliste</p>
+              </div>
+            </div>		    
+
+            <div tal:replace="structure provider:plone.abovecontentbody" />
+
+            <div tal:condition="context/text" tal:replace="structure context/text/output" />
+
+            <div tal:replace="structure provider:plone.belowcontentbody" />
+
+          </div>
+       
+          <!--<div class="col-1">
+	    <a href="" tal:attributes="href python:context.absolute_url()+'/edit'"><span class="glyphicon glyphicon-pencil"/></a>
+	  </div>-->
+
+        </div>
+
+	<div tal:condition="view/create_kopffragen" class="row mb-3">
+	  <div class="col-12">
+            <span tal:replace="structure view/create_kopffragen"/>
+          </div>
+	</div>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <h2>Die fünf Sicherheitsregeln</h2>
+          </div>
+        </div>
+
+        <div tal:repeat="thema view/get_themenbereiche" class="row mb-3">
+	    <div class="col-2 col-md-1"><h1 class="display-4" tal:content="python:thema[0]">0</h1></div>
+	    <div class="col-10 col-md-4"><h3 tal:content="python:thema[1]">Thema</h3></div>
+	    <div class="col-12 col-md-6" tal:define="contents python:view.get_content().get(thema[1])">
+              <div tal:repeat="fragestellung contents">
+                <span tal:replace="structure fragestellung/frage"/>
+		<label tal:condition="fragestellung/title" tal:content="fragestellung/title"/>
+		<span tal:replace="structure fragestellung/snippet"/>
+	      </div>
+	    </div>
+	    <div class="col-md-1"></div>
+	    <div class="col-12"><hr></div>
+	</div>
+
+      </div>
+
+    </tal:main-macro>
+</metal:main>
+
 </body>
 </html>

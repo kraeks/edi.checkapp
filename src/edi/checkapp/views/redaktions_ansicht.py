@@ -39,19 +39,6 @@ class RedaktionsAnsicht(BrowserView):
                 entry['editurl'] = obj.absolute_url() + '/edit'
                 if obj.thema in themen:
                     themen[obj.thema].append(entry)
-            elif i.portal_type == 'Fragestellung':
-                obj = i.getObject()
-                entry = {}
-                entry['title'] = u''
-                entry['frage'] = u''
-                if obj.antworttyp in ['radio', 'checkbox']:
-                    entry['title'] = obj.title
-                if obj.frage:
-                    entry['frage'] = obj.frage.output
-                entry['snippet'] = ploneapi.content.get_view('fragestellung-view', obj, self.request).create_formmarkup()    
-
-
-
         return themen
 
     def get_themenbereiche(self):

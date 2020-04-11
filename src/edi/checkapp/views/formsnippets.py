@@ -121,6 +121,7 @@ def option_group_label_textarea(context):
     snippet = snippet.replace("edi_context_label", context.label)
     return snippet
 
+
 def textline(id, title, typ):
     snippet = """\
 <div class="form-group mb-3">
@@ -131,6 +132,7 @@ def textline(id, title, typ):
     snippet = snippet.replace("edi_context_title", title)
     snippet = snippet.replace("edi_context_antworttyp", typ)
     return snippet
+
 
 def textline_unit(id, title, typ, einheit):
     snippet = """\
@@ -147,6 +149,7 @@ def textline_unit(id, title, typ, einheit):
     snippet = snippet.replace("edi_context_einheit", einheit)
     return snippet
 
+
 def textarea(id, title):
     snippet = """\
 <div class="form-group" mb-3>
@@ -155,4 +158,17 @@ def textarea(id, title):
 </div>"""
     snippet = snippet.replace("edi_context_id", id)
     snippet = snippet.replace("edi_context_title", title)
+    return snippet
+
+
+def select(id, title, options):
+    snippet = u"""\
+<div class="form-group mb-3">
+  <label for="edi_context_id">edi_context_title</label>
+  <select class="form-control" id="edi_context_id">"""
+    snippet = snippet.replace("edi_context_id", id)
+    snippet = snippet.replace("edi_context_title", title)
+    for i in options:
+        snippet += u"<option>edi_opt</option>".replace('edi_opt', i) 
+    snippet += u"</select></div>"
     return snippet
