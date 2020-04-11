@@ -1,17 +1,25 @@
 # -*- coding: utf-8 -*-
-
 from edi.checkapp import _
 from Products.Five.browser import BrowserView
-
-# from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from edi.checkapp.content.fragestellung import possibleThemen
+from plone import api as ploneapi
 
 class FragestellungView(BrowserView):
-    # If you want to define a template here, please remove the template from
-    # the configure.zcml registration of this view.
-    # template = ViewPageTemplateFile('fragestellung_view.pt')
+
+    def create_optionmarkup(self):
+        snippet = ''
+        for i in self.context.getFolderContents():
+            obj = i.getObject()
+            snippet += ploneapi.content.get_view('option-view', obj, self.request).create_snippet()
+        return snippet
+
+    def create_formmarkup(self):
+        if self.context.antworttyp in ['radio', 'checkbox']:
+            return self.create_optionmarkup()
+        else:
+            return u'<p></p>'
 
     def __call__(self):
-        # Implement your own actions:
-        self.msg = _(u'A small message')
+        self.thema = possibleThemen(self.context).getTerm(self.context.thema).title
+        self.formmarkup = self.create_formmarkup()
         return self.index()

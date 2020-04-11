@@ -8,14 +8,14 @@
 
   <browser:page
     name="fragestellung-view"
-    for="Products.CMFCore.interfaces.IFolderish"
+    for="edi.checkapp.content.fragestellung.IFragestellung"
     class=".fragestellung_view.FragestellungView"
     template="fragestellung_view.pt"
     permission="zope2.View"
     />
 
   <browser:page
-    name="view"
+    name="option-view"
     for="edi.checkapp.content.antwortoption.IAntwortoption"
     class=".option_view.OptionView"
     template="option_view.pt"

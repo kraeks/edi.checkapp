@@ -5,14 +5,17 @@ from edi.checkapp.views.formsnippets import option, option_group, option_group_l
 
 class OptionView(BrowserView):
 
-    def __call__(self):
+    def create_snippet(self):
         if self.context.zusatz:
             if self.context.showlabel and not self.context.einheit:
-                self.snippet = option_group_label(self.context)
+                return option_group_label(self.context)
             elif self.context.showlabel and self.context.einheit:
-                self.snippet = option_group_label_einheit(self.context)
+                return option_group_label_einheit(self.context)
             else:
-                self.snippet = option_group(self.context)
+                return option_group(self.context)
         else:
-            self.snippet = option(self.context)
+            return option(self.context)
+
+    def __call__(self):
+        self.snippet = self.create_snippet()
         return self.index()

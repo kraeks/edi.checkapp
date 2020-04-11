@@ -1,13 +1,42 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="edi.checkapp"
-      metal:use-macro="context/main_template/macros/master">
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
 <body>
-  <metal:block fill-slot="content-core">
-      <h2 i18n:translate="">Sample View</h2>
-      <p tal:content="view/msg">this gets replaced</p>
-  </metal:block>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+
+      <div class="container">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <p tal:content="view/thema"/>
+
+        <h1 class="documentFirstHeading" tal:content="context/title" />
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <span tal:replace="structure context/frage/output"/>
+
+        <div tal:replace="structure view/formmarkup"/>
+
+        <div tal:condition="context/notiz" class="form-group">
+          <label for="" tal:attributes="for context/id">Notiz</label>
+          <textarea class="form-control" id="" tal:attributes="id context/id" rows="3"></textarea>
+        </div>
+
+        <h2 tal:condition="context/tipp">Hinweis zur Fragestellung"</h2>
+        <p tal:condition="context/tipp" tal:content="context/tipp"/>
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+      </div>
+
+    </tal:main-macro>
+</metal:main>
+
 </body>
 </html>
