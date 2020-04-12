@@ -47,14 +47,15 @@ class IFragestellung(model.Schema):
     """
 
     title = schema.TextLine(title=u"Titel der Fragestellung",
-                            description=u"Geben Sie hier Ihre Frage ein.")
+                            description=u"Der Titel wird als Legende des Eingabefeldes angezeigt.")
 
     thema = schema.Choice(title=u"Auswahl des Themas für die Frage",
                           source=possibleThemen,
                           required=False)
 
     frage = RichText(title=u"Formatierte Fragestellung",
-                     description=u"Alternativ können Sie hier eine formatierte Fragestellung für die Checkliste eingeben.",
+                     description=u"Zusätzlich zur Legende des Eingabefeldes  können Sie hier eine formatierte Fragestellung\
+                                   für die Checkliste eingeben.",
                      required=False)
 
     antworttyp = schema.Choice(title=u"Wählen Sie eine Art der Antwort aus.",

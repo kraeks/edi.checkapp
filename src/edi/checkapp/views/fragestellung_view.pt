@@ -15,7 +15,7 @@
         <h3 tal:content="view/thema"/>
 
 	<span tal:condition="context/frage" tal:replace="structure context/frage/output"/>
-	<label tal:condition="python: context.antworttyp in ['radio', 'checkbox']" tal:content="context/title"/>
+	<legend tal:condition="python: context.antworttyp in ['radio', 'checkbox']" class="edi__checkapp" tal:content="context/title"/>
         <div tal:replace="structure view/formmarkup"/>
 
         <div tal:condition="context/notiz" class="form-group">

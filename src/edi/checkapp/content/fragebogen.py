@@ -53,11 +53,10 @@ class IFragebogen(model.Schema):
                                required=False,
                                value_type=DictRow(title=u"Kopffragen", schema=IKopffragen))
 
-    notiz = schema.Bool(title=u"Notizenfeld anbieten",
-                        description=u"Anklicken wenn Sie eine Notiz zu dieser Fragestellung erlauben wollen.")
-
     schlusstext = RichText(title=u'Schlusstext des Fragebogens', required=False)
 
+    notiz = schema.Bool(title=u"Notizenfeld anbieten",
+                        description=u"Anklicken wenn Sie eine Notiz zu dieser Fragestellung erlauben wollen.")
 
 
 @implementer(IFragebogen)

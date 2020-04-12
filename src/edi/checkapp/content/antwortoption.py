@@ -33,7 +33,12 @@ Feldtypen = SimpleVocabulary(fieldtypes)
 
 @provider(IContextSourceBinder)
 def possibleQuestionsOrPages(context):
-    brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'], review_state="published")
+    try:
+        searchcontext = context.aq_parent
+        print(searchcontext)
+        brains = ploneapi.content.find(context=searchcontext, portal_type=[u'Hinweistext', u'Fragestellung'], review_state="published")
+    except:
+        brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Fragestellung'], review_state="published")
     terms = []
     if brains:
         for i in brains:
@@ -47,10 +52,13 @@ def possibleQuestionsOrPages(context):
 
 class IAntwortoption(model.Schema):
 
-    title = schema.TextLine(title=u"Label der Antwortoption")
+    title = schema.TextLine(title=u"Label oder Legende der Antwortoption",
+                            description="Bei einfachen Optionen wird diese Angabe als Label verwendet. Werden Zusatzangaben\
+                                    zur Antwortoption gefordert, Bsp: ja, im Abstand von 20 Meter kann diese Angabe als Legende\
+                                    über der Antwortoption angezeigt werden.")
 
-    showlabel = schema.Bool(title="Label anzeigen/ausblenden", default=True, required=False,
-                            description="Bei zusätzlichen Angaben kann in bestimmten Fällen auf das Label verzichtet werden.\
+    showlabel = schema.Bool(title="Legende anzeigen/ausblenden", default=True, required=False,
+                            description="Bei zusätzlichen Angaben kann in bestimmten Fällen auf die Legende verzichtet werden.\
                                          In diesen Fällen wird lediglich die Bezeichnung der Zusatzangabe angezeigt.")
 
     zusatz = schema.Bool(title=u"Zusatzangabe ein-/ausschalten", required=False)

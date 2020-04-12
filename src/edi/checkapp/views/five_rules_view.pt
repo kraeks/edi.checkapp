@@ -17,12 +17,20 @@
 
             <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-            <div class="jumbotron jumbotron-fluid">
-              <div class="container">
-              <h1 class="display-4" tal:content="context/title"></h1>
-              <p class="lead">Checkliste</p>
-              </div>
-            </div>		    
+		<div class="card mb-5">
+		  <div class="row no-gutters">
+		    <div class="col-md-4 text-white bg-info border border-white">
+                      <p class="lead ml-3 mt-3">Checkliste</p>
+		      <p tal:condition="context/fbid" class="card-text ml-3" tal:content="context/fbid"></p>
+		    </div>
+		    <div class="col-md-8 text-white bg-primary border border-white">
+		      <div class="card-body">
+			<h2 tal:content="context/title">Card title</h2>
+			<p tal:condition="context/description" class="card-text" tal:content="context/description"></p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
             <div tal:replace="structure provider:plone.abovecontentbody" />
 
@@ -52,17 +60,30 @@
 
         <div tal:repeat="thema view/get_themenbereiche" class="row mb-3">
 	    <div class="col-2 col-md-1"><h1 class="display-4" tal:content="python:thema[0]">0</h1></div>
-	    <div class="col-10 col-md-4"><h3 tal:content="python:thema[1]">Thema</h3></div>
-	    <div class="col-12 col-md-6" tal:define="contents python:view.get_content().get(thema[1])">
+	    <div class="col-10 col-md-4"><h4 tal:content="python:thema[1]">Thema</h4></div>
+	    <div class="col-12 col-md-7" tal:define="contents python:view.get_content().get(thema[1])">
               <div tal:repeat="fragestellung contents">
                 <span tal:replace="structure fragestellung/frage"/>
-		<label tal:condition="fragestellung/title" tal:content="fragestellung/title"/>
+		<legend class="edi__checkapp" tal:condition="fragestellung/title" tal:content="fragestellung/title"/>
 		<span tal:replace="structure fragestellung/snippet"/>
 	      </div>
 	    </div>
-	    <div class="col-md-1"></div>
 	    <div class="col-12"><hr></div>
 	</div>
+        
+	<div tal:condition="context/schlusstext" class="row mb-3">
+	  <div class="col-12">
+            <div tal:replace="structure context/schlusstext/output"/>
+          </div>
+	</div>
+
+	<div tal:condition="context/notiz" class="row mb-3"> 
+	  <div class="form-group">
+            <label for="" tal:attributes="for context/id">Notiz</label>
+            <textarea class="form-control" id="" tal:attributes="id context/id" rows="3"></textarea>
+	  </div>  
+        </div>
+
 
       </div>
 
