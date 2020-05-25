@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import hashlib
 from plone.app.textfield import RichText
+from z3c.form.browser.radio import RadioFieldWidget
+from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from plone import api as ploneapi
@@ -14,13 +17,20 @@ from zope.interface import Invalid
 from zope.interface import invariant
 
 answertypes = [
-         SimpleTerm(u'radio', u'radio', u'Auswahl (bitte Antwortoptionen hinzufügen)'),
-         SimpleTerm(u'checkbox', u'checkbox', u'Mehrfachauswahl (bitte Antwortoptionen hinzufügen)'),
+         SimpleTerm(u'radio', u'radio', u'Radiobutton (Einfachauswahl)'),
+         SimpleTerm(u'checkbox', u'checkbox', u'Checkboxen (Mehrfachauswahl)'),
          SimpleTerm(u'number', u'number', u'Zahlenwert'),
          SimpleTerm(u'text', u'text', u'Textzeile'),
          SimpleTerm(u'textarea', u'textarea', u'Textfeld'),
         ]
 Antworttypen = SimpleVocabulary(answertypes)
+
+labelclass = [
+         SimpleTerm(u'label', u'label', u'Label'),
+         SimpleTerm(u'edi__checkapp', u'edi__checkapp', u'Legende'),
+         ]
+Labelclass = SimpleVocabulary(labelclass)
+
 
 
 @provider(IContextSourceBinder)
@@ -35,7 +45,9 @@ def possibleThemen(context):
         for i in themenbereiche:
             if '#' in i:
                 thema = i.split('#')[1]
-                mytoken = normalizer.normalize(thema)
+                m = hashlib.sha256()
+                m.update(thema.encode('utf-8'))
+                mytoken = m.hexdigest()
                 terms.append(SimpleVocabulary.createTerm(thema,mytoken,thema))
             else:    
                 terms.append(SimpleVocabulary.createTerm(i,mytoken,i))
@@ -46,23 +58,29 @@ class IFragestellung(model.Schema):
     """ Marker interface and Dexterity Python Schema for Frage
     """
 
-    title = schema.TextLine(title=u"Titel der Fragestellung",
-                            description=u"Der Titel wird als Legende des Eingabefeldes angezeigt.")
+    title = schema.TextLine(title=u"Titel der Fragestellung")
+
+    #directives.widget(fieldclass=RadioFieldWidget)
+    fieldclass = schema.Choice(title="Wie soll der Titel der Fragestellung angezeigt werden?", 
+                               vocabulary=Labelclass,
+                               default='edi__checkapp')
 
     thema = schema.Choice(title=u"Auswahl des Themas für die Frage",
                           source=possibleThemen,
-                          required=False)
+                          required=True)
 
     frage = RichText(title=u"Formatierte Fragestellung",
-                     description=u"Zusätzlich zur Legende des Eingabefeldes  können Sie hier eine formatierte Fragestellung\
-                                   für die Checkliste eingeben.",
+                     description=u'Die Inhalte dieses Feldes (Texte, Bilder, etc.) ersetzen die Angabe im Feld\
+                                   "Titel der Fragestellung".',
                      required=False)
 
-    antworttyp = schema.Choice(title=u"Wählen Sie eine Art der Antwort aus.",
+    antworttyp = schema.Choice(title=u"Antworttyp auswählen",
+                     description = u"Bei Radiobutton und Checkboxen müssen nach Speichern der Fragestellung Antwortoptionen\
+                                     hinzugefügt werden.",
                      source = Antworttypen,
                      default = 'radio')
 
-    einheit = schema.TextLine(title=u"Einheit der Antwort (nur bei Ganzzahl oder Gleitkommazahl)",
+    einheit = schema.TextLine(title=u"Einheit der Antwort (nur bei Antworttyp Zahlenwert möglich)",
                      description = u"Sie können hier eine Einheit für die Antwort angeben (z.B.: Ohm, Ampere, Volt)",
                      required=False)
 
@@ -70,7 +88,6 @@ class IFragestellung(model.Schema):
                         description=u"Anklicken wenn Sie eine Notiz zu dieser Fragestellung erlauben wollen.")
 
     tipp = RichText(title=u"Hinweis zur Fragestellung",
-                     description=u"Bitte bearbeiten Sie hier einen Hinweis zur Frage",
                      required=False)
 
     @invariant

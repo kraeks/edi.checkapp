@@ -15,19 +15,20 @@ class FiveRulesView(BrowserView):
         for i in self.context.kopffragen:
             title = i.get('frage')
             id = normalizer.normalize(title)
+            fieldclass = 'edi__checkapp'
             typ = i.get('antworttyp')
             einheit = i.get('einheit')
             optionen = i.get('optionen')
             if typ == 'radio':
-                kopffragen += select(id, title, optionen)
+                kopffragen += select(id, fieldclass, title, optionen)
             elif typ in ['text', 'date', 'datetime-local']:
-                kopffragen += textline(id, title, typ)
+                kopffragen += textline(id, fieldclass, title, typ)
             elif typ == 'number' and not einheit:
-                kopffragen += textline(id, title, typ)
+                kopffragen += textline(id, fieldclass, title, typ)
             elif typ == 'number' and einheit:
-                kopffragen += textline_unit(id, title, typ, einheit)
+                kopffragen += textline_unit(id, fieldclass, title, typ, einheit)
             elif typ == 'textarea':
-                kopffragen += textarea(id, title)
+                kopffragen += textarea(id, fieldclass, title)
         return kopffragen
 
 

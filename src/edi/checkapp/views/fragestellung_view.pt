@@ -18,13 +18,21 @@
 	<legend tal:condition="python: context.antworttyp in ['radio', 'checkbox']" class="edi__checkapp" tal:content="context/title"/>
         <div tal:replace="structure view/formmarkup"/>
 
-        <div tal:condition="context/notiz" class="form-group">
-          <label for="" tal:attributes="for context/id">Notiz</label>
-          <textarea class="form-control" id="" tal:attributes="id context/id" rows="3"></textarea>
-        </div>
+        <div tal:condition="view/check_options">
+          <div class="alert alert-info" tal:define="typ view/check_options" role="alert">		
+            Sie haben als Antworttyp <span tal:replace="typ"/> ausgewählt. Über Hinzufügen > Antwortoption fügen Sie
+	    die möglichen Antwortoptionen hinzu.</div>
+        </div>		
 
-        <h2 tal:condition="context/tipp">Hinweis zur Fragestellung"</h2>
-        <p tal:condition="context/tipp" tal:content="context/tipp"/>
+        <div class="row">
+          <div tal:condition="context/notiz" class="form-group col-12">
+            <label for="" tal:attributes="for context/id">Notiz</label>
+            <textarea class="form-control" id="" tal:attributes="id context/id" rows="3"></textarea>
+          </div>
+	</div>
+
+        <h2 tal:condition="context/tipp">Hinweis zur Fragestellung</h2>
+        <p tal:condition="context/tipp" tal:content="structure context/tipp/output"/>
 
       </div>
 

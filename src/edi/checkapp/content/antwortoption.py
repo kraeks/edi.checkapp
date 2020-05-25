@@ -26,6 +26,7 @@ SiguvColors = SimpleVocabulary(colorterms)
 
 fieldtypes = [
          SimpleTerm(u'textline', u'textline', u'Textzeile'),
+         SimpleTerm(u'number', u'number', u'Zahlenwert'),
          SimpleTerm(u'textarea', u'textarea', u'Textfeld'),
         ]
 Feldtypen = SimpleVocabulary(fieldtypes)
@@ -57,11 +58,11 @@ class IAntwortoption(model.Schema):
                                     zur Antwortoption gefordert, Bsp: ja, im Abstand von 20 Meter kann diese Angabe als Legende\
                                     über der Antwortoption angezeigt werden.")
 
-    showlabel = schema.Bool(title="Legende anzeigen/ausblenden", default=True, required=False,
+    showlabel = schema.Bool(title="Legende anzeigen", default=True, required=False,
                             description="Bei zusätzlichen Angaben kann in bestimmten Fällen auf die Legende verzichtet werden.\
                                          In diesen Fällen wird lediglich die Bezeichnung der Zusatzangabe angezeigt.")
 
-    zusatz = schema.Bool(title=u"Zusatzangabe ein-/ausschalten", required=False)
+    #zusatz = schema.Bool(title=u"Zusatzangabe ein-/ausschalten", required=False)
 
     label = schema.TextLine(title="Bezeichnung der Zusatzangabe", required=False)
 
@@ -80,9 +81,9 @@ class IAntwortoption(model.Schema):
 
     @invariant
     def zusatz_invariant(data):
-        if data.zusatz:
-            if not data.label:
-                raise Invalid(u"Für Zusatzangaben ist ein Label erforderlich")
+        if data.einheit:
+            if data.zusatzformat != 'number':
+                raise Invalid(u"Eine Einheit kann nur bei einem Zahlenwert eingetragen werden.")
 
 
 @implementer(IAntwortoption)

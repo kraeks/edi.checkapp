@@ -11,6 +11,8 @@ from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from zope import schema
 from zope.interface import implementer
+from zope.interface import Invalid
+from zope.interface import invariant
 
 # from edi.checkapp import _
 
@@ -43,21 +45,26 @@ class IFragebogen(model.Schema):
 
     text = RichText(title=u'Startseite oder Kopf des Fragebogens', required=False)
 
+    form.widget('kopffragen', DataGridFieldFactory)
+    kopffragen = schema.List(title=u"Allgemeine Fragen oder Angaben im Kopf des Fragebogens",
+                               required=False,
+                               value_type=DictRow(title=u"Kopffragen", schema=IKopffragen))
+
     themenbereiche = schema.List(title=u'Themenbereiche',
                                  description=u'Geben Sie hier die Themenbereiche an, zu denen die Fragen gruppiert werden sollen.',
                                  value_type=schema.TextLine(),
-                                 required=False)
-
-    form.widget('kopffragen', DataGridFieldFactory)
-    kopffragen = schema.List(title=u"Allgemeine Fragen im Kopf des Fragebogens",
-                               required=False,
-                               value_type=DictRow(title=u"Kopffragen", schema=IKopffragen))
+                                 required=True)
 
     schlusstext = RichText(title=u'Schlusstext des Fragebogens', required=False)
 
     notiz = schema.Bool(title=u"Notizenfeld anbieten",
                         description=u"Anklicken wenn Sie eine Notiz zu dieser Fragestellung erlauben wollen.")
 
+    @invariant
+    def checkoption(data):
+        for i in data.kopffragen:
+            if i.get('antworttyp') == "radio" and not i.get('optionen'):
+                raise Invalid(u"Bei Auswahl von Radiobutton müssen Optionen angebeben werden.")
 
 @implementer(IFragebogen)
 class Fragebogen(Container):

@@ -78,9 +78,9 @@
 	</div>
 
 	<div tal:condition="context/notiz" class="row mb-3"> 
-	  <div class="form-group">
-            <label for="" tal:attributes="for context/id">Notiz</label>
-            <textarea class="form-control" id="" tal:attributes="id context/id" rows="3"></textarea>
+	  <div class="form-group col-12">
+            <label class="edi__checkapp" for="" tal:attributes="for context/id">Notiz</label>
+            <textarea class="form-control textarea-widget text-field" id="" tal:attributes="id context/id" rows="3"></textarea>
 	  </div>  
         </div>
 
