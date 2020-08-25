@@ -21,7 +21,6 @@
 		  <div class="row no-gutters">
 		    <div class="col-md-4 text-white bg-info border border-white">
                       <p class="lead ml-3 mt-3">Checkliste</p>
-		      <p tal:condition="context/fbid" class="card-text ml-3" tal:content="context/fbid"></p>
 		    </div>
 		    <div class="col-md-8 text-white bg-primary border border-white">
 		      <div class="card-body">
@@ -35,8 +34,6 @@
             <div tal:replace="structure provider:plone.abovecontentbody" />
 
             <div tal:condition="context/text" tal:replace="structure context/text/output" />
-
-            <div tal:replace="structure provider:plone.belowcontentbody" />
 
           </div>
        
@@ -84,6 +81,7 @@
 	  </div>  
         </div>
 
+        <div tal:replace="structure provider:plone.belowcontentbody" />
 
       </div>
 

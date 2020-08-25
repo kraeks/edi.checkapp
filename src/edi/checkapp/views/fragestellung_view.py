@@ -11,7 +11,8 @@ class FragestellungView(BrowserView):
         snippet = ''
         for i in self.context.getFolderContents():
             obj = i.getObject()
-            snippet += ploneapi.content.get_view('option-view', obj, self.request).create_snippet()
+            if obj.portal_type == 'Antwortoption':
+                snippet += ploneapi.content.get_view('option-view', obj, self.request).create_snippet()
         return snippet
 
     def create_formmarkup(self):

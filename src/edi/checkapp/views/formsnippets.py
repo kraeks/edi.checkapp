@@ -17,7 +17,8 @@ def formatsnippet(context, snippet):
 def option(context):
     snippet = """\
 <div class="form-check mb-3">
-  <input class="form-check-input" type="edi_context_optiontyp" name="edi_context_parentid" id="edi_context_id" value="edi_context_id">
+  <input class="form-check-input" type="edi_context_optiontyp" name="edi_context_parentid" id="edi_context_id" value="edi_context_id"
+    data-toggle="collapse" data-target="#toggle-example">
   <label class="form-check-label" for="edi_context_id">
     edi_context_title
   </label>

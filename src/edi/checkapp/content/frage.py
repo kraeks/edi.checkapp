@@ -20,20 +20,22 @@ from zope.interface import implementer
 from zope.component import getUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.interface import implementer
+from zope.globalrequest import getRequest
 
 dictdefault={'ja':u'', 'unbekannt':u'', 'nein':u''}
 
 listdefault=[
-             {u'antwort':u'ja', u'aktion':None, u'color':u'#51AE31'},
-             {u'antwort':u'unbekannt', u'aktion':None, u'color':u'#F39200'},
-             {u'antwort':u'nein', u'aktion':None, u'color':u'#D40F14'},
+            {u'antwort':u'ja', u'aktion':None, u'color':u'#51AE31', u'rates':u'ok'},
+            {u'antwort':u'unbekannt', u'aktion':None, u'color':u'#F39200', u'rates':u'klaerung'},
+            {u'antwort':u'nein', u'aktion':None, u'color':u'#D40F14', u'rates':u'handlung'},
             ]
 
 @provider(IContextSourceBinder)
 def possibleQuestionsOrPages(context):
-    print('Fragen')
-    print(context)
-    brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'], review_state="published")
+    #request = getRequest()
+    #context = request.PARENTS[0]
+    #context = context.aq_parent
+    brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Frage'])
     terms = []
     if brains:
         for i in brains:
@@ -71,6 +73,14 @@ colorterms = [
         ]
 SiguvColors = SimpleVocabulary(colorterms)
 
+rating = [
+         SimpleTerm(u'keine', u'keine', u'keine Bewertung'),
+         SimpleTerm(u'ok', u'ok', u'OK'),
+         SimpleTerm(u'klaerung', u'klaerung', u'Klärungsbedarf'),
+         SimpleTerm(u'handlung', u'handlung', u'Handlungsbedarf'),
+        ]
+RatingValues = SimpleVocabulary(rating)
+
 
 class IAnswerOptions(model.Schema):
     antwort = schema.TextLine(title=u"Antwortoption")
@@ -81,6 +91,11 @@ class IAnswerOptions(model.Schema):
 
     color = schema.Choice(title=u"Farbe",
                           source=SiguvColors,
+                          required=False)
+
+    rates = schema.Choice(title=u"Bewertung",
+                          source=RatingValues,
+                          default=u'keine',
                           required=False)
 
 class IFrage(model.Schema):
