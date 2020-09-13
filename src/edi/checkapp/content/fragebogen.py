@@ -18,6 +18,7 @@ from zope.interface import invariant
 
 answertypes = [
          SimpleTerm(u'radio', u'radio', u'Auswahl'),
+         SimpleTerm(u'checkbox', u'checkbox', u'Mehrfachauswahl'),
          SimpleTerm(u'textarea', u'textarea', u'Textfeld'),
          SimpleTerm(u'text', u'text', u'Textzeile'),
          SimpleTerm(u'number', u'number', u'Zahlenwert'),

@@ -11,6 +11,14 @@ def formatsnippet(context, snippet):
         snippet = snippet.replace("edi_context_label", context.label)
     if context.einheit:    
         snippet = snippet.replace("edi_context_einheit", context.einheit)
+    if context.xseinheit:
+        snippet = snippet.replace("edi_context_xseinheit", context.xseinheit)
+    if context.dep_fields:
+        targetid = context.dep_fields.to_object.getId()
+        target = 'data-toggle="collapse" data-target="#%s"' % targetid
+        snippet = snippet.replace("edi_data_toggle", target)
+    else:
+        snippet = snippet.replace("edi_data_toggle", u"")
     return snippet
 
 
@@ -18,7 +26,7 @@ def option(context):
     snippet = """\
 <div class="form-check mb-3">
   <input class="form-check-input" type="edi_context_optiontyp" name="edi_context_parentid" id="edi_context_id" value="edi_context_id"
-    data-toggle="collapse" data-target="#toggle-example">
+    edi_data_toggle>
   <label class="form-check-label" for="edi_context_id">
     edi_context_title
   </label>
@@ -27,10 +35,10 @@ def option(context):
 
 def option_group(context):
     snippet = """\
-<div class="input-group mb-3">
+<div class="input-group mb-3" edi_data_toggle>
   <div class="input-group-prepend">
     <div class="input-group-text">
-      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id" aria-label="edi_context_title">
+      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id" aria-label="edi_context_title" edi_data_toggle>
     </div>
     <span class="input-group-text">edi_context_label</span>
   </div>
@@ -40,16 +48,19 @@ def option_group(context):
 
 def option_group_einheit(context):
     snippet = """\
-<div class="input-group mb-3">
+<div class="input-group mb-3" edi_data_toggle>
   <div class="input-group-prepend">
     <div class="input-group-text">
-      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id" aria-label="edi_context_title">
+      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id" aria-label="edi_context_title" edi_data_toggle>
     </div>
     <span class="input-group-text">edi_context_label</span>
   </div>
   <input type="text" class="form-control" aria-label="edi_context_label">
-  <div class="input-group-append">
+  <div class="input-group-append d-none d-sm-block">
     <span class="input-group-text">edi_context_einheit</span>
+  </div>
+  <div class="input-group-append d-block d-sm-none">
+    <span class="input-group-text">edi_context_xseinheit</span>
   </div>
 </div>"""
     return formatsnippet(context, snippet)
@@ -57,10 +68,10 @@ def option_group_einheit(context):
 def option_group_legend(context):
     snippet = """\
 <legend>edi_context_title</legend>
-<div class="input-group mb-3">
+<div class="input-group mb-3" edi_data_toggle>
   <div class="input-group-prepend">
     <div class="input-group-text">
-      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title">
+      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title" edi_data_toggle>
     </div>
     <span class="input-group-text">edi_context_label</span>
   </div>
@@ -72,16 +83,19 @@ def option_group_legend(context):
 def option_group_legend_einheit(context):
     snippet = """\
 <legend>edi_context_title</legend>
-<div id="edi_context_id" class="input-group mb-3">
+<div id="edi_context_id" class="input-group mb-3" edi_data_toggle>
   <div class="input-group-prepend">
     <div class="input-group-text">
-      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title">
+      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title" edi_data_toggle>
     </div>
     <span class="input-group-text">edi_context_label</span>
   </div>
   <input type="text" class="form-control" aria-label="edi_context_title">
-  <div class="input-group-append">
+  <div class="input-group-append d-none d-sm-block">
     <span class="input-group-text">edi_context_einheit</span>
+  </div>
+  <div class="input-group-append d-block d-sm-none">
+    <span class="input-group-text">edi_context_xseinheit</span>
   </div>
 </div>"""
     return formatsnippet(context, snippet)
@@ -89,10 +103,10 @@ def option_group_legend_einheit(context):
 
 def option_group_textarea(context):
     snippet = """\
-<div class="input-group mb-3">
+<div class="input-group mb-3" edi_data_toggle>
   <div class="input-group-prepend">
     <div class="input-group-text">
-      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title">
+      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title" edi_data_toggle>
     </div>
     <span class="input-group-text">edi_context_label</span>
   </div>
@@ -104,10 +118,10 @@ def option_group_textarea(context):
 def option_group_legend_textarea(context):
     snippet = """\
 <legend>edi_context_title</legend>
-<div class="input-group mb-3">
+<div class="input-group mb-3" edi_data_toggle>
   <div class="input-group-prepend">
     <div class="input-group-text">
-      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title">
+      <input name="edi_context_parentid" type="edi_context_optiontyp" value="edi_context_id"  aria-label="edi_context_title" edi_data_toggle>
     </div>
     <span class="input-group-text">edi_context_label</span>
   </div>
@@ -170,4 +184,15 @@ def select(id, fieldclass, title, options):
     for i in options:
         snippet += u"<option>edi_opt</option>".replace('edi_opt', i) 
     snippet += u"</select></div>"
+    return snippet
+
+def checkbox(id, fieldclass, title, options):
+    snippet = """\
+<legend>%s</legend>""" %title
+    for i in options:
+        snippet += """\
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" id="%s" value="%s">
+  <label class="form-check-label" for="%s">%s</label>
+</div>""" %(id, i, id, i)
     return snippet

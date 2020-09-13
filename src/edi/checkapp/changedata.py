@@ -5,11 +5,33 @@ from reportlab.lib.units import cm, mm
 from reportlab.pdfbase.ttfonts import TTFont
 from Products.Five import BrowserView
 from plone.i18n.normalizer import idnormalizer
+from edi.checkapp.pdfgen import createpdf
 from plone import api
+import tempfile
 import requests
 import jsonlib
 import json
 import hashlib
+
+class PDFCreator(BrowserView):
+
+    def __call__(self):
+        body = self.request.get('BODY')
+        if body:
+            body_unicode = self.request.get('BODY').decode('utf-8')
+            data = json.loads(body_unicode)
+            print(data)
+
+        filehandle = tempfile.TemporaryFile()
+
+        pdf = createpdf(filehandle)
+        pdf.seek(0)
+
+        RESPONSE = self.request.response
+        RESPONSE.setHeader('content-type', 'application/pdf')
+        RESPONSE.setHeader('content-disposition', 'attachment; filename=zertifikat.pdf')
+        return pdf.read()
+
 
 class ChecklistLogin(BrowserView):
 

@@ -6,11 +6,14 @@ from plone import api as ploneapi
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from plone.app.vocabularies.catalog import CatalogSource
+from z3c.relationfield.schema import RelationChoice
 from zope import schema
 from zope.interface import implementer
 from zope.interface import Invalid
 from zope.interface import invariant
 
+from edi.checkapp import _
 
 colorterms = [
          SimpleTerm(u'#555555', u'secondary', u'siguv-grau'),
@@ -70,6 +73,16 @@ class IAntwortoption(model.Schema):
                             source=Feldtypen, default='textline')    
 
     einheit = schema.TextLine(title=u"optional: Maßeinheit für Zusatzangabe", required=False)
+
+    xseinheit = schema.TextLine(title=u"optional: Maßeinheit für Zusatzangabe (Kurzform für Smartphone)", required=False)
+
+
+    dep_fields = RelationChoice(title=u'The Evil Mastermind',
+            description="Bitte wählen Sie hier eine Fragestellung, die dem Benutzer bei Auswahl dieser Option angezeigt werden soll.",
+            #vocabulary='plone.app.vocabularies.Catalog',
+            source=CatalogSource(portal_type='Fragestellung'),
+            required=False,
+    )
 
     aktion = schema.Choice(title=u"Aktion",
                            source=possibleQuestionsOrPages,

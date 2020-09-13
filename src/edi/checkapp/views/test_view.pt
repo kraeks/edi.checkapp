@@ -6,8 +6,68 @@
       metal:use-macro="context/main_template/macros/master">
 <body>
   <metal:block fill-slot="content-core">
-      <h2 i18n:translate="">Sample View</h2>
-      <p tal:content="view/msg">this gets replaced</p>
+
+<div>
+                
+		<legend class="edi__checkapp">Art der Abdeckung</legend>
+		<div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" name="abdeckung" id="formteile" value="formteile">
+  <label class="form-check-label" for="formteile">
+    Abdeckung mit Formteilen
+  </label>
+</div><div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" name="abdeckung" id="tuecher" value="tuecher">
+  <label class="form-check-label" for="tuecher">
+    Abdeckung mit isolierenden Tüchern
+  </label>
+</div><div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" name="abdeckung" id="antwortoption" value="antwortoption" data-toggle="collapse" data-target="#toggle-example">
+  <label class="form-check-label" for="antwortoption">
+    keine Abdeckung angebracht, weil:
+  </label>
+</div>
+	      </div>
+
+
+
+
+<div id="toggle-example" class="collapse in">
+                
+		<legend class="edi__checkapp">Keine Abdeckung angebracht, weil:</legend>
+		<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <div class="input-group-text">
+      <input name="entfernung-zu-beruehrbaren-teilen" type="radio" value="antwortoption-1" aria-label="Entfernung zu berührbaren Teilen beträgt:">
+    </div>
+    <span class="input-group-text">Entfernung zu berührbaren Teilen:</span>
+  </div>
+  <input type="text" class="form-control" aria-label="Entfernung zu berührbaren Teilen:">
+  <div class="input-group-append">
+    <span class="input-group-text">Meter</span>
+  </div>
+</div><div class="form-check mb-3">
+  <input class="form-check-input" type="radio" name="entfernung-zu-beruehrbaren-teilen" id="antwortoption" value="antwortoption">
+  <label class="form-check-label" for="antwortoption">
+    keine unter Spannung stehenden Teile im Arbeitsbereich vorhanden
+  </label>
+</div><div class="form-check mb-3">
+  <input class="form-check-input" type="radio" name="entfernung-zu-beruehrbaren-teilen" id="antwortoption-2" value="antwortoption-2">
+  <label class="form-check-label" for="antwortoption-2">
+    Die Entfernung zu berührbaren Teilen beträgt mehr als 5m
+  </label>
+</div>
+	      </div>
+
+
+	<!--<script>
+		$(document).ready(function(){
+    $("#antwortoption").click(function(){
+      $("#toggle-example").collapse('toggle'); // toggle collapse
+    });
+		});</script>-->
+
+
+
   </metal:block>
 </body>
 </html>

@@ -24,7 +24,7 @@
 		    </div>
 		    <div class="col-md-8 text-white bg-primary border border-white">
 		      <div class="card-body">
-			<h2 tal:content="context/title">Card title</h2>
+			<h3 tal:content="context/title">Card title</h3>
 			<p tal:condition="context/description" class="card-text" tal:content="context/description"></p>
 		      </div>
 		    </div>
@@ -49,7 +49,7 @@
           </div>
 	</div>
 
-        <div class="row mb-3">
+        <div class="row mt-5 mb-3">
           <div class="col-12">
             <h2>Die fünf Sicherheitsregeln</h2>
           </div>
@@ -57,9 +57,9 @@
 
         <div tal:repeat="thema view/get_themenbereiche" class="row mb-3">
 	    <div class="col-2 col-md-1"><h1 class="display-4" tal:content="python:thema[0]">0</h1></div>
-	    <div class="col-10 col-md-4"><h4 tal:content="python:thema[1]">Thema</h4></div>
+	    <div class="col-10 col-md-4"><h3 tal:content="python:thema[1]">Thema</h3></div>
 	    <div class="col-12 col-md-7" tal:define="contents python:view.get_content().get(thema[1])">
-              <div tal:repeat="fragestellung contents">
+              <div tal:repeat="fragestellung contents" tal:attributes="class fragestellung/class;id fragestellung/id">
                 <span tal:replace="structure fragestellung/frage"/>
 		<legend class="edi__checkapp" tal:condition="fragestellung/title" tal:content="fragestellung/title"/>
 		<span tal:replace="structure fragestellung/snippet"/>
@@ -84,6 +84,10 @@
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
       </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
     </tal:main-macro>
 </metal:main>
