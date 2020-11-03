@@ -70,12 +70,11 @@ class FiveRulesView(BrowserView):
             if k.portal_type == 'Fragestellung':
                 obj = k.getObject()
                 entry = {}
-                entry['id'] = obj.getId()
+                entry['id'] = 'edi'+obj.UID()
                 entry['class'] = ""
                 entry['title'] = u''
                 entry['frage'] = u''
                 if obj.getId() in depends:
-                    print('ja')
                     entry['class'] = "collapse"
                 if obj.antworttyp in ['radio', 'checkbox']:
                     entry['title'] = obj.title
@@ -83,12 +82,8 @@ class FiveRulesView(BrowserView):
                     entry['frage'] = obj.frage.output
                 for option in obj.getFolderContents():
                     opt_object = option.getObject()
-                    try:
-                        if opt_object.dep_fields:
-                            print('found')
-                            depends.append(opt_object.dep_fields.to_object.getId())
-                    except:
-                        import pdb;pdb.set_trace()
+                    if opt_object.dep_fields:
+                        depends.append(opt_object.dep_fields.to_object.getId())
                 entry['snippet'] = ploneapi.content.get_view('fragestellung-view', obj, self.request).create_formmarkup()    
                 entry['editurl'] = obj.absolute_url() + '/edit'
                 if obj.thema in themen:

@@ -50,8 +50,6 @@ def possibleQuestionsOrPages(context):
 
 @provider(IContextSourceBinder)
 def possibleThemen(context):
-    print('Themen')
-    print(context)
     terms = []
     normalizer = getUtility(IIDNormalizer)
     themenbereiche = context.themenbereiche

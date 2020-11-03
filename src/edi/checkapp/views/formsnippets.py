@@ -3,8 +3,8 @@
 ## Felder für Antwortoptionen ##
 
 def formatsnippet(context, snippet):
-    snippet = snippet.replace("edi_context_id", context.getId())
-    snippet = snippet.replace("edi_context_parentid", context.aq_parent.getId())
+    snippet = snippet.replace("edi_context_id", 'edi'+context.UID())
+    snippet = snippet.replace("edi_context_parentid", 'edi'+context.aq_parent.UID())
     snippet = snippet.replace("edi_context_optiontyp", context.aq_parent.antworttyp)
     snippet = snippet.replace("edi_context_title", context.title)
     if context.label:
@@ -14,7 +14,7 @@ def formatsnippet(context, snippet):
     if context.xseinheit:
         snippet = snippet.replace("edi_context_xseinheit", context.xseinheit)
     if context.dep_fields:
-        targetid = context.dep_fields.to_object.getId()
+        targetid = 'edi'+context.dep_fields.to_object.UID()
         target = 'data-toggle="collapse" data-target="#%s"' % targetid
         snippet = snippet.replace("edi_data_toggle", target)
     else:

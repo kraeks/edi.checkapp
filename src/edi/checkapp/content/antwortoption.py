@@ -2,16 +2,19 @@
 from plone.app.textfield import RichText
 from plone.dexterity.content import Item
 from plone.supermodel import model
+from plone.autoform import directives
 from plone import api as ploneapi
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from plone.app.vocabularies.catalog import CatalogSource
 from z3c.relationfield.schema import RelationChoice
+from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from zope import schema
 from zope.interface import implementer
 from zope.interface import Invalid
 from zope.interface import invariant
+from plone.app.multilingual.browser.interfaces import make_relation_root_path
 
 from edi.checkapp import _
 
@@ -39,8 +42,8 @@ Feldtypen = SimpleVocabulary(fieldtypes)
 def possibleQuestionsOrPages(context):
     try:
         searchcontext = context.aq_parent
-        print(searchcontext)
-        brains = ploneapi.content.find(context=searchcontext, portal_type=[u'Hinweistext', u'Fragestellung'], review_state="published")
+        brains = ploneapi.content.find(context=searchcontext, portal_type=[u'Hinweistext', u'Fragestellung'], 
+                                       review_state="published")
     except:
         brains = ploneapi.content.find(portal_type=[u'Hinweistext', u'Fragestellung'], review_state="published")
     terms = []
@@ -65,8 +68,6 @@ class IAntwortoption(model.Schema):
                             description="Bei zusätzlichen Angaben kann in bestimmten Fällen auf die Legende verzichtet werden.\
                                          In diesen Fällen wird lediglich die Bezeichnung der Zusatzangabe angezeigt.")
 
-    #zusatz = schema.Bool(title=u"Zusatzangabe ein-/ausschalten", required=False)
-
     label = schema.TextLine(title="Bezeichnung der Zusatzangabe", required=False)
 
     zusatzformat = schema.Choice(title="Feldtyp der zusätzlichen Angabe", required=True,
@@ -74,16 +75,26 @@ class IAntwortoption(model.Schema):
 
     einheit = schema.TextLine(title=u"optional: Maßeinheit für Zusatzangabe", required=False)
 
-    xseinheit = schema.TextLine(title=u"optional: Maßeinheit für Zusatzangabe (Kurzform für Smartphone)", required=False)
+    xseinheit = schema.TextLine(title=u"optional: Maßeinheit für Zusatzangabe (Kurzform für Smartphone)", 
+                                required=False)
 
 
-    dep_fields = RelationChoice(title=u'The Evil Mastermind',
-            description="Bitte wählen Sie hier eine Fragestellung, die dem Benutzer bei Auswahl dieser Option angezeigt werden soll.",
-            #vocabulary='plone.app.vocabularies.Catalog',
-            source=CatalogSource(portal_type='Fragestellung'),
+    dep_fields = RelationChoice(title=u'Abhängiges Feld',
+            description="Bitte wählen Sie hier eine Fragestellung, die dem Benutzer bei Auswahl dieser Option angezeigt\
+                    werden soll.",
+            vocabulary='plone.app.vocabularies.Catalog',
             required=False,
     )
 
+    directives.widget(
+        "dep_fields",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["Fragestellung"],
+            #"basePath": make_relation_root_path,
+        },
+    )
+    
     aktion = schema.Choice(title=u"Aktion",
                            source=possibleQuestionsOrPages,
                            required=False)
