@@ -70,6 +70,8 @@ class IAntwortoption(model.Schema):
 
     label = schema.TextLine(title="Bezeichnung der Zusatzangabe", required=False)
 
+    platzhalter = schema.TextLine(title=u"Platzhalter für das Eingabefeld", required=False)
+
     zusatzformat = schema.Choice(title="Feldtyp der zusätzlichen Angabe", required=True,
                             source=Feldtypen, default='textline')    
 

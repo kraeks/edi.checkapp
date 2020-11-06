@@ -87,7 +87,7 @@ class IFragestellung(model.Schema):
     notiz = schema.Bool(title=u"Notizenfeld anbieten",
                         description=u"Anklicken wenn Sie eine Notiz zu dieser Fragestellung erlauben wollen.")
 
-    tipp = RichText(title=u"Hinweis zur Fragestellung",
+    tipp = RichText(title=u"Hinweis oder Hilfe zur Fragestellung",
                      required=False)
 
     @invariant

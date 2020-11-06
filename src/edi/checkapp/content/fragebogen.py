@@ -44,6 +44,8 @@ class IFragebogen(model.Schema):
 
     fbid = schema.TextLine(title=u"Kürzel oder Nummer des Fragebogens")
 
+    fbcat = schema.TextLine(title=u"Kategorie des Fragebogens (wird im Kopfbereich dargestellt)")
+
     text = RichText(title=u'Startseite oder Kopf des Fragebogens', required=False)
 
     form.widget('kopffragen', DataGridFieldFactory)

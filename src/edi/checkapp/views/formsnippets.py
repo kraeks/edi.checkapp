@@ -7,6 +7,7 @@ def formatsnippet(context, snippet):
     snippet = snippet.replace("edi_context_parentid", 'edi'+context.aq_parent.UID())
     snippet = snippet.replace("edi_context_optiontyp", context.aq_parent.antworttyp)
     snippet = snippet.replace("edi_context_title", context.title)
+    snippet = snippet.replace("edi_context_platzhalter", context.platzhalter)
     if context.label:
         snippet = snippet.replace("edi_context_label", context.label)
     if context.einheit:    
@@ -26,7 +27,7 @@ def option(context):
     snippet = """\
 <div class="form-check mb-3">
   <input class="form-check-input" type="edi_context_optiontyp" name="edi_context_parentid" id="edi_context_id" value="edi_context_id"
-    edi_data_toggle>
+    placeholder="edi_context_platzhalter" edi_data_toggle>
   <label class="form-check-label" for="edi_context_id">
     edi_context_title
   </label>

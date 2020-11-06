@@ -21,6 +21,7 @@
 		  <div class="row no-gutters">
 		    <div class="col-md-4 text-white bg-info border border-white">
                       <p class="lead ml-3 mt-3">Checkliste</p>
+		      <h4 class="ml-3" tal:content="context/fbcat"/>
 		    </div>
 		    <div class="col-md-8 text-white bg-primary border border-white">
 		      <div class="card-body">
