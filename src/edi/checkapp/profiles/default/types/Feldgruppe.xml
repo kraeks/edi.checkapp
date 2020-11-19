@@ -1,41 +1,37 @@
 <?xml version="1.0"?>
 <object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    name="Fragebogen"
+    name="Feldgruppe"
     meta_type="Dexterity FTI"
     i18n:domain="edi.checkapp">
 
   <!-- Basic properties -->
   <property
       i18n:translate=""
-      name="title">Fragebogen</property>
+      name="title">Feldgruppe</property>
   <property
       i18n:translate=""
-      name="description">Im Fragebogen werden die Fragen der Checkliste angelegt.</property>
+      name="description">Ein Ordner zur Konfiguration von Feldgruppen</property>
 
   <property name="allow_discussion">False</property>
-  <property name="factory">Fragebogen</property>
+  <property name="factory">Feldgruppe</property>
   <property name="icon_expr"></property>
   <property name="link_target"></property>
 
   <!-- Hierarchy control -->
-  <property name="global_allow">True</property>
+  <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
-    <element value="Feldgruppe" />
-        <element value="Fragestellung" />
-        <element value="Hinweistext" />
-        <element value="Frage" />
-      <!--
+  <!--
     <element value="Document" />
     <element value="File" />
   -->
   </property>
   <!-- Schema, class and security -->
-  <property name="add_permission">edi.checkapp.AddFragebogen</property>
-  <property name="klass">edi.checkapp.content.fragebogen.Fragebogen</property>
+  <property name="add_permission">edi.checkapp.AddFeldgruppe</property>
+  <property name="klass">edi.checkapp.content.feldgruppe.Feldgruppe</property>
   <property name="model_file"></property>
   <property name="model_source"></property>
-  <property name="schema">edi.checkapp.content.fragebogen.IFragebogen</property>
+  <property name="schema">edi.checkapp.content.feldgruppe.IFeldgruppe</property>
 
   <!-- Enabled behaviors -->
   <property name="behaviors" purge="false">
@@ -56,7 +52,8 @@
     <!--<element value="plone.relateditems"/>-->
     <!--<element value="plone.richtext"/>-->
     <!--<element value="plone.tableofcontents"/>-->
-    <!--<element value="plone.versionable" />-->
+    <!--<element value="plone.versioning" />-->
+    <!--<element value="plone.translatable" />-->
     <!--<element value="plone.nextprevioustoggle" />-->
     <!--<element value="plone.nextpreviousenabled" />-->
     <!--<element value="plone.navigationroot" />-->
@@ -64,13 +61,12 @@
   </property>
 
   <!-- View information -->
-  <property name="add_view_expr">string:${folder_url}/++add++Fragebogen</property>
+  <property name="add_view_expr">string:${folder_url}/++add++Feldgruppe</property>
   <property name="default_view">view</property>
   <property name="default_view_fallback">False</property>
   <property name="immediate_view">view</property>
   <property name="view_methods">
     <element value="view"/>
-    <element value="five-rules-view"/>
   </property>
 
   <!-- Method aliases -->

@@ -80,6 +80,8 @@ class IFragestellung(model.Schema):
                      source = Antworttypen,
                      default = 'radio')
 
+    platzhalter = schema.TextLine(title=u'Platzhalter (nur bei Antworttypen "Textzeile" oder "Text")', required=False)
+
     einheit = schema.TextLine(title=u"Einheit der Antwort (nur bei Antworttyp Zahlenwert möglich)",
                      description = u"Sie können hier eine Einheit für die Antwort angeben (z.B.: Ohm, Ampere, Volt)",
                      required=False)

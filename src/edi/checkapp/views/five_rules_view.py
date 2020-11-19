@@ -13,6 +13,7 @@ from zope.intid.interfaces import IIntIds
 from zope.security import checkPermission
 from zc.relation.interfaces import ICatalog
 from plone.app.linkintegrity.handlers import referencedRelationship
+from plone.i18n.normalizer import idnormalizer
 
 class FiveRulesView(BrowserView):
 
@@ -94,7 +95,9 @@ class FiveRulesView(BrowserView):
         themenbereiche = []
         for i in self.context.themenbereiche:
             if '#' in i:
-                themenbereiche.append(i.split('#'))
+                elements = i.split('#')
+                elements.append(idnormalizer.normalize(elements[1]))
+                themenbereiche.append(elements)
             else:
-                themenbereiche.append(('', i))
+                themenbereiche.append(('', i, idnormalizer.normalize(i)))
         return themenbereiche

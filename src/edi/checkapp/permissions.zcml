@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="edi.checkapp.AddFeldgruppe"
+        title="edi.checkapp: Add Feldgruppe"
+    />
+
+
+    <permission
         id="edi.checkapp.AddAntwortoption"
         title="edi.checkapp: Add Antwortoption"
     />
