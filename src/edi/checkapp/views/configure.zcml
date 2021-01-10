@@ -7,6 +7,13 @@
   -*- extra stuff goes here -*-
 
   <browser:page
+    name="schema-view"
+    for="Products.CMFCore.interfaces.IFolderish"
+    class=".schema_view.SchemaView"
+    permission="zope2.View"
+    />
+
+  <browser:page
     name="test-view"
     for="Products.CMFCore.interfaces.IFolderish"
     class=".test_view.TestView"
