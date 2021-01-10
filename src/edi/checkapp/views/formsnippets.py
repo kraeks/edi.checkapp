@@ -207,9 +207,20 @@ def select(id, fieldclass, title, options):
     snippet += u"</select></div>"
     return snippet
 
+def radiobutton(id, fieldclass, title, options):
+    snippet = """\
+<legend class="mt-3">%s</legend>""" %title
+    for i in options:
+        snippet += """\
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="%s" id="%s" value="%s">
+  <label class="form-check-label" for="%s">%s</label>
+</div>""" %(id, id, i, id, i)
+    return snippet
+
 def checkbox(id, fieldclass, title, options):
     snippet = """\
-<legend>%s</legend>""" %title
+<legend class="mt-3">%s</legend>""" %title
     for i in options:
         snippet += """\
 <div class="form-check form-check-inline">

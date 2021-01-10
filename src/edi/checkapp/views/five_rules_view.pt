@@ -59,7 +59,8 @@
         <div tal:repeat="thema view/get_themenbereiche" class="row mb-3">
 	    <div class="col-2 col-md-1"><h1 class="display-4" tal:content="python:thema[0]">0</h1></div>
 	    <div class="col-10 col-md-4"><h3 tal:content="python:thema[1]">Thema</h3></div>
-	    <div class="col-12 col-md-7 accordion" tal:attributes="id python: thema[2]" 
+
+	    <div tal:condition="python: thema[3] == 'Akkordeon'" class="col-12 col-md-7 accordion" tal:attributes="id python: thema[2]" 
 		 tal:define="contents python:view.get_content().get(thema[1])">
               <div tal:repeat="fragestellung contents" tal:attributes="class fragestellung/class;id fragestellung/id;
 		                                                       data-parent python:'#'+thema[2]">
@@ -68,6 +69,16 @@
 		<span tal:replace="structure fragestellung/snippet"/>
 	      </div>
 	    </div>
+
+            <div tal:condition="python: thema[3] != 'Akkordeon'" class="col-12 col-md-7" tal:attributes="id python: thema[2]" 
+                 tal:define="contents python:view.get_content().get(thema[1])">
+              <div tal:repeat="fragestellung contents" tal:attributes="class fragestellung/class;id fragestellung/id">
+                <span tal:replace="structure fragestellung/frage"/>
+                <legend class="edi__checkapp" tal:condition="fragestellung/title" tal:content="fragestellung/title"/>
+                <span tal:replace="structure fragestellung/snippet"/>
+              </div>
+            </div>
+
 	    <div class="col-12"><hr></div>
 	</div>
         

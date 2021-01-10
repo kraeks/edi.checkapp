@@ -3,7 +3,7 @@ from edi.checkapp import _
 from Products.Five.browser import BrowserView
 from plone import api as ploneapi
 from edi.checkapp.content.frage import possibleQuestionsOrPages, SiguvColors
-from edi.checkapp.views.formsnippets import textline, textline_unit, textarea, select, checkbox
+from edi.checkapp.views.formsnippets import textline, textline_unit, textarea, select, radiobutton, checkbox
 from zope.component import getUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
@@ -44,7 +44,7 @@ class FiveRulesView(BrowserView):
             einheit = i.get('einheit')
             optionen = i.get('optionen')
             if typ == 'radio':
-                kopffragen += select(id, fieldclass, title, optionen)
+                kopffragen += radiobutton(id, fieldclass, title, optionen)
             elif typ == 'checkbox':
                 kopffragen += checkbox(id, fieldclass, title, optionen)
             elif typ in ['text', 'date', 'datetime-local']:
@@ -81,8 +81,7 @@ class FiveRulesView(BrowserView):
                     entry['title'] = obj.title
                 if obj.frage:
                     entry['frage'] = obj.frage.output
-                for option in obj.getFolderContents():
-                    opt_object = option.getObject()
+                for opt_object in obj.listFolderContents(contentFilter={"portal_type" : "Antwortoption"}):
                     if opt_object.dep_fields:
                         depends.append(opt_object.dep_fields.to_object.getId())
                 entry['snippet'] = ploneapi.content.get_view('fragestellung-view', obj, self.request).create_formmarkup()    
@@ -96,8 +95,12 @@ class FiveRulesView(BrowserView):
         for i in self.context.themenbereiche:
             if '#' in i:
                 elements = i.split('#')
-                elements.append(idnormalizer.normalize(elements[1]))
+                if len(elements) == 2:
+                    elements.append(idnormalizer.normalize(elements[1]))
+                    elements.append(u'Block')
+                elif len(elements) == 3:
+                    elements.insert(2, idnormalizer.normalize(elements[1]))
                 themenbereiche.append(elements)
             else:
-                themenbereiche.append(('', i, idnormalizer.normalize(i)))
+                themenbereiche.append(('', i, idnormalizer.normalize(i), u'Block'))    
         return themenbereiche

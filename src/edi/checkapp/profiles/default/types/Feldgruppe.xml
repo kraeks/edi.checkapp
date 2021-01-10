@@ -21,10 +21,9 @@
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
-  <!--
-    <element value="Document" />
-    <element value="File" />
-  -->
+        <element value="Fragestellung" />
+        <element value="Hinweistext" />
+        <element value="Frage" />
   </property>
   <!-- Schema, class and security -->
   <property name="add_permission">edi.checkapp.AddFeldgruppe</property>
