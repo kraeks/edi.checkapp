@@ -25,6 +25,12 @@ answertypes = [
         ]
 Antworttypen = SimpleVocabulary(answertypes)
 
+direction = [
+        SimpleTerm(u'left', u'left', u'linksbündig'),
+        SimpleTerm(u'right', u'right', u'rechtsbündig'),
+        ]
+Direction = SimpleVocabulary(direction)
+
 labelclass = [
          SimpleTerm(u'label', u'label', u'Label'),
          SimpleTerm(u'edi__checkapp', u'edi__checkapp', u'Legende'),
@@ -81,6 +87,11 @@ class IFragestellung(model.Schema):
                      default = 'radio')
 
     platzhalter = schema.TextLine(title=u'Platzhalter (nur bei Antworttypen "Textzeile" oder "Text")', required=False)
+
+    ausrichtung = schema.Choice(title=u"Ausrichtung auswählen",
+                     source=Direction,
+                     default=u'left',
+                     required=True)
 
     einheit = schema.TextLine(title=u"Einheit der Antwort (nur bei Antworttyp Zahlenwert möglich)",
                      description = u"Sie können hier eine Einheit für die Antwort angeben (z.B.: Ohm, Ampere, Volt)",

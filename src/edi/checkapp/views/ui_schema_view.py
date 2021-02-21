@@ -56,6 +56,8 @@ class UiSchemaView(BrowserView):
                         groupelement['options']['append'] = k['einheit']
                     if k['placeholder']:
                         groupelement['options']['placeholder'] = k['placeholder']
+                    if k['ausrichtung'] == u'right':
+                        groupelement['options']['textAlign'] = 'right'
                 elif antworttyp == 'textarea':
                     groupelement['type'] = "Control"
                     groupelement['scope'] = "#/properties/%s" % k['id']

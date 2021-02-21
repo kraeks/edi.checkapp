@@ -76,6 +76,7 @@ class FiveRulesView(BrowserView):
                 entry['title'] = obj.title
                 entry['frage'] = u''
                 entry['placeholder'] = obj.platzhalter
+                entry['ausrichtung'] = obj.ausrichtung
                 entry['einheit'] = obj.einheit
                 entry['typ'] = obj.antworttyp
                 entry['required'] = obj.required
