@@ -73,12 +73,17 @@ class FiveRulesView(BrowserView):
                 entry = {}
                 entry['id'] = 'edi'+obj.UID()
                 entry['class'] = ""
-                entry['title'] = u''
+                entry['title'] = obj.title
                 entry['frage'] = u''
+                entry['placeholder'] = obj.platzhalter
+                entry['einheit'] = obj.einheit
+                entry['typ'] = obj.antworttyp
+                entry['required'] = obj.required
                 if obj.getId() in depends:
                     entry['class'] = "collapse"
                 if obj.antworttyp in ['radio', 'checkbox']:
                     entry['title'] = obj.title
+                    entry['optionen'] = obj.listFolderContents(contentFilter={"portal_type" : "Antwortoption"})
                 if obj.frage:
                     entry['frage'] = obj.frage.output
                 for opt_object in obj.listFolderContents(contentFilter={"portal_type" : "Antwortoption"}):

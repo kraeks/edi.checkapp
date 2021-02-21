@@ -37,6 +37,8 @@ class IKopffragen(model.Schema):
 
     optionen = schema.List(title=u"Antwortoptionen", value_type=schema.TextLine(), required=False)
 
+    required = schema.Bool(title=u"Pflichtfeld", default=True)
+
 
 class IFragebogen(model.Schema):
     """ Marker interface and Dexterity Python Schema for Fragebogen

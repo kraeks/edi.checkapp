@@ -86,6 +86,8 @@ class IFragestellung(model.Schema):
                      description = u"Sie können hier eine Einheit für die Antwort angeben (z.B.: Ohm, Ampere, Volt)",
                      required=False)
 
+    required = schema.Bool(title=u"Markieren falls die Fragestellung eine Pflichtfeld darstellt.", default=True)
+
     notiz = schema.Bool(title=u"Notizenfeld anbieten",
                         description=u"Anklicken wenn Sie eine Notiz zu dieser Fragestellung erlauben wollen.")
 
