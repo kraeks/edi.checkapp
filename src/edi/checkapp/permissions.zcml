@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="edi.checkapp.AddService"
+        title="edi.checkapp: Add Service"
+    />
+
+
+    <permission
         id="edi.checkapp.AddEllaKonfig"
         title="edi.checkapp: Add EllaKonfig"
     />
