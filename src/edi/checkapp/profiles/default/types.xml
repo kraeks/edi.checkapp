@@ -11,4 +11,5 @@
   <object meta_type="Dexterity FTI" name="Fragestellung"/>
   <object meta_type="Dexterity FTI" name="Antwortoption"/>
   <object meta_type="Dexterity FTI" name="Feldgruppe"/>
+  <object meta_type="Dexterity FTI" name="EllaKonfig"/>
 </object>
