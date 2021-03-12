@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="edi.checkapp.AddServicebutton"
+        title="edi.checkapp: Add Servicebutton"
+    />
+
+
+    <permission
         id="edi.checkapp.AddService"
         title="edi.checkapp: Add Service"
     />

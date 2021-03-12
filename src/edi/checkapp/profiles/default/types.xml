@@ -13,4 +13,5 @@
   <object meta_type="Dexterity FTI" name="Feldgruppe"/>
   <object meta_type="Dexterity FTI" name="EllaKonfig"/>
   <object meta_type="Dexterity FTI" name="Service"/>
+  <object meta_type="Dexterity FTI" name="Servicebutton"/>
 </object>
