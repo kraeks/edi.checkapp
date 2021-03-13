@@ -62,7 +62,7 @@ class EllaView(BrowserView):
             if button.additional:
                 servicebutton['additional'] = self.create_additional(button.additional)
             servicebuttons.append(servicebutton)
-        return servicebutton
+        return servicebuttons
 
     def create_single_service(self, service):
         ellaservice = dict()
@@ -131,7 +131,7 @@ class EllaView(BrowserView):
         naventries = []
         page = 1
         for i in startseiten:
-            naventries.append("""<li class="page-item edi_active"><a class="page-link" href="#/services/%s">%s</a></li>""" % (i.get('id'), str(page)))
+            naventries.append("""<li class="page-item edi_active"><a class="page-link" href="#/services/%s">%s</a></li>""" % (i.getId(), str(page)))
             page += 1
         navs = []
         for i in range(len(startseiten)):

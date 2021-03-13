@@ -68,7 +68,9 @@ class SchemaView(BrowserView):
                 if req:
                     required.append(id)
 
-        return {'title':title,
+        return {'name':context.getId(),
+                'title':title,
                 'description':description,
+                'type':'object',
                 'properties':props, 
-                'required':required,}
+                'required':required}
