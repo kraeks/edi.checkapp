@@ -8,8 +8,10 @@ import jsonlib
 
 class UiSchemaView(BrowserView):
 
-    def __call__(self):
+    def __call__(self, localmarker=False):
         uischema = self.get_uischema()
+        if localmarker:
+            return uischema
         return jsonlib.write(uischema)
 
     def get_uischema(self):

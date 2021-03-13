@@ -8,8 +8,10 @@ from plone import api
 
 class SchemaView(BrowserView):
 
-    def __call__(self):
+    def __call__(self, localmarker=False):
         objschema = self.get_schema()
+        if localmarker:
+            return objschema
         return jsonlib.write(objschema)
 
     def get_schema(self):

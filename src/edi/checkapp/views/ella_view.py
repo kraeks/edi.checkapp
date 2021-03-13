@@ -40,7 +40,7 @@ class EllaView(BrowserView):
         props = dict()
         for prop in addlist:
             key = prop.get('addid')
-            props[key] = dict
+            props[key] = dict()
             props[key]['title'] = prop.get('addtitle')
             props[key]['type'] = prop.get('addtype')
             if prop.get('pflichtfeld'):
@@ -60,23 +60,24 @@ class EllaView(BrowserView):
             servicebutton['cssclass'] = button.cssclass
             servicebutton['method'] = button.method
             if button.additional:
-                servicebutton['additional'] = self.create_additionl(button.additional)
+                servicebutton['additional'] = self.create_additional(button.additional)
             servicebuttons.append(servicebutton)
         return servicebutton
 
     def create_single_service(self, service):
-        service = dict()
-        service['name'] = service.getId()
-        service['title'] = service.title
-        service['description'] = service.description
-        service['type'] = service.servicetyp
+        ellaservice = dict()
+        ellaservice['name'] = service.getId()
+        ellaservice['title'] = service.title
+        ellaservice['description'] = service.description
+        ellaservice['type'] = service.servicetyp
         form = service.serviceref.to_object
         json_schema_view = ploneapi.content.get_view(name='schema-view', context=form, request=self.request)
-        service['form'] = json_schema_view.__call__()
+        ellaservice['form'] = json_schema_view.__call__(localmarker=True)
         ui_schema_view = ploneapi.content.get_view(name='ui-schema-view', context=form, request=self.request)
-        service['ui'] = ui_schema_view.__call__()
+        ellaservice['ui'] = ui_schema_view.__call__(localmarker=True)
         buttons = service.listFolderContents(contentFilter={"portal_type" : "Servicebutton"})
-        service['formactions'] = self.create_servicebuttons(buttons)
+        ellaservice['formactions'] = self.create_servicebuttons(buttons)
+        return ellaservice
 
     def create_group_service(self,service):
         servicelist = list()
@@ -87,13 +88,13 @@ class EllaView(BrowserView):
                 servicelist.append(self.create_single_service(subservice))
             else:
                 servicelist.append(self.create_single_page(subservice))
-        service = dict()
-        service['name'] = service.getId()
-        service['title'] = service.title
-        service['description'] = service.description
-        service['type'] = service.servicetyp
-        service['services'] = servicelist
-        return servicelist
+        ellaservice = dict()
+        ellaservice['name'] = service.getId()
+        ellaservice['title'] = service.title
+        ellaservice['description'] = service.description
+        ellaservice['type'] = service.servicetyp
+        ellaservice['services'] = servicelist
+        return ellaservice
 
     def create_page_service(self, service):
         service = dict()
@@ -123,7 +124,7 @@ class EllaView(BrowserView):
         image = getattr(page, 'image', u'')
         if image:
             image = '%s/@@download/image' % page.absolute_url()
-        service['text'] = format_ella_single(title, text, image) + nav
+        service['text'] = self.format_ella_single(page.title, text, image) + nav
         return service
 
     def create_navigations(self, startseiten):
@@ -215,9 +216,9 @@ class EllaView(BrowserView):
             image = getattr(obj, 'image', u'')
             if image:
                 image = '%s/@@download/image' % obj.absolute_url()
-            content = format_ella_single(title, text, image)
+            content = self.format_ella_single(title, text, image)
             if len(self.context.startseiten) > 1:
-                navi = format_ella_startnavi(self.context.startseiten)
+                navi = self.format_ella_startnavi(self.context.startseiten)
                 content += navi
         return content
 
