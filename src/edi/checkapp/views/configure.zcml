@@ -7,6 +7,14 @@
   -*- extra stuff goes here -*-
 
   <browser:page
+    name="servicebutton-view"
+    for="Products.CMFCore.interfaces.IFolderish"
+    class=".servicebutton_view.ServicebuttonView"
+    template="servicebutton_view.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page
     name="view"
     for="edi.checkapp.content.service.IService"
     class=".service_view.ServiceView"

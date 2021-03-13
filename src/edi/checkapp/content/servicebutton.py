@@ -44,8 +44,10 @@ class IServicebutton(model.Schema):
     name = schema.TextLine(title=u"Servicename")
     cssclass = schema.Choice(title=u"Buttonfarbe", vocabulary=buttonfarbe, default="primary")
     method = schema.Choice(title=u"Request-Methode", vocabulary=method, default="POST")
+    modaltext = schema.Text(title="Text im Modal nach Betätigung des Buttons", required=False)
     directives.widget('additional', DataGridFieldFactory)
-    additional = schema.List(title="Zusatzangaben", required=False, value_type=DictRow(title="Properties", schema=IProperties))
+    additional = schema.List(title="Zusatzformular im Modal nach Betätigung des Buttons", required=False, 
+            value_type=DictRow(title="Properties", schema=IProperties))
 
 
 @implementer(IServicebutton)
