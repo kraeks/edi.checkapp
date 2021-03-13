@@ -28,7 +28,7 @@ method = SimpleVocabulary((
 
 field = SimpleVocabulary((
     SimpleTerm(value="string", token="string", title="Textzeile"),
-    SimpleTerm(value="boolean" token="string", title="Checkbox")
+    SimpleTerm(value="boolean", token="boolean", title="Checkbox")
     ))
 
 class IProperties(model.Schema):
@@ -44,7 +44,7 @@ class IServicebutton(model.Schema):
     name = schema.TextLine(title=u"Servicename")
     cssclass = schema.Choice(title=u"Buttonfarbe", vocabulary=buttonfarbe)
     method = schema.Choice(title=u"Request-Methode", vocabulary=field)
-    additional = schema.List(title"Zusatzangaben", required=False, value_type=DictRow(title="Properties", schema=IProperties))
+    additional = schema.List(title="Zusatzangaben", required=False, value_type=DictRow(title="Properties", schema=IProperties))
 
 
 @implementer(IServicebutton)

@@ -5,7 +5,7 @@ from z3c.relationfield.schema import RelationList
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.app.textfield import RichText
 from plone.namedfile.field import NamedBlobImage
-rom plone.autoform import directives
+from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from zope import schema
@@ -32,7 +32,7 @@ class IEllaKonfig(model.Schema):
             default = default_template,
             description="Das Template kann die Jinja-Variablen {{ella_title }}, {{ ella_bodytext }} und {{ ella_image }} enthalten.")
 
-    bodytext = Richtext(title=u"Konfiguration einer der Ella-App", required=False)
+    bodytext = RichText(title=u"Konfiguration einer der Ella-App", required=False)
 
     image = NamedBlobImage(title=u"Titelbild der Startseite", required=False)
 
@@ -41,7 +41,7 @@ class IEllaKonfig(model.Schema):
             description="Referenzieren Sie hier eine oder mehrere Startseiten. Mehrere Startseiten werden als Tour angezeigt.",
             default=[],
             value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
-            required=required=False)
+            required=False)
 
     directives.widget(
         "startseiten",

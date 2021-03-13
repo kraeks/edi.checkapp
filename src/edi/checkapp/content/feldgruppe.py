@@ -8,7 +8,7 @@ from edi.checkapp import _
 
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-fieldsets = SimpleVocabulary((
+fieldsetlook = SimpleVocabulary((
     SimpleTerm(value=u"block", token=u"block", title=u"Feldgruppe mit Zwischen-Überschrift"),
     SimpleTerm(value=u"accordeon", token=u"accordeon", title=u"Akkordeon")
     ))
@@ -21,7 +21,7 @@ class IFeldgruppe(model.Schema):
 
     fieldsets = schema.Choice(title="Darstellung der Feldgruppe",
             required = True,
-            vocabulary = fieldset)
+            vocabulary = fieldsetlook)
 
 @implementer(IFeldgruppe)
 class Feldgruppe(Container):

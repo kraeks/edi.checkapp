@@ -4,6 +4,7 @@ from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from zope import schema
+from z3c.relationfield.schema import RelationChoice
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from zope.interface import implementer
 from zope.schema.vocabulary import SimpleTerm
@@ -22,7 +23,7 @@ class IService(model.Schema):
     """ Marker interface and Dexterity Python Schema for Service
     """
     
-    servicetyp = Choice(title=u"Servicetyp", default='service', vocabulary=servicetyp)
+    servicetyp = schema.Choice(title=u"Servicetyp", default='service', vocabulary=servicetyp)
 
     serviceref = RelationChoice(title="Referenz auf das Formular, die Checkliste oder Seite",
             vocabulary='plone.app.vocabularies.Catalog',
@@ -34,7 +35,7 @@ class IService(model.Schema):
         pattern_options={
             "basePath": make_relation_root_path,
             "selectableTypes": ["Fragebogen"],
-        },
+        })
 
 
 @implementer(IService)
