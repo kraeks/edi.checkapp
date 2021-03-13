@@ -42,8 +42,9 @@ class IServicebutton(model.Schema):
     """ Marker interface and Dexterity Python Schema for Servicebutton
     """
     name = schema.TextLine(title=u"Servicename")
-    cssclass = schema.Choice(title=u"Buttonfarbe", vocabulary=buttonfarbe)
-    method = schema.Choice(title=u"Request-Methode", vocabulary=field)
+    cssclass = schema.Choice(title=u"Buttonfarbe", vocabulary=buttonfarbe, default="primary")
+    method = schema.Choice(title=u"Request-Methode", vocabulary=method, default="POST")
+    directives.widget('additional', DataGridFieldFactory)
     additional = schema.List(title="Zusatzangaben", required=False, value_type=DictRow(title="Properties", schema=IProperties))
 
 

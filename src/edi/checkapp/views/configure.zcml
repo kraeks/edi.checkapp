@@ -7,8 +7,8 @@
   -*- extra stuff goes here -*-
 
   <browser:page
-    name="service-view"
-    for="Products.CMFCore.interfaces.IFolderish"
+    name="view"
+    for="edi.checkapp.content.service.IService"
     class=".service_view.ServiceView"
     template="service_view.pt"
     permission="zope2.View"
