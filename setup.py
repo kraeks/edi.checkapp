@@ -51,6 +51,7 @@ setup(
         'collective.z3cform.datagridfield',
         'reportlab',
         'jsonlib-python3',
+        'jinja2',
     ],
     extras_require={
         'test': [

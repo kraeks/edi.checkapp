@@ -2,24 +2,11 @@
 from Products.Five.browser import BrowserView
 from edi.checkapp.views.examples import uischema
 from plone.i18n.normalizer import idnormalizer
-from plone import api
+from plone import api as ploneapi
 import jsonlib
 from jinja2 import Template
 
 class EllaView(BrowserView):
-
-    def __call__(self):
-        if self.context.portal_type == "EllaKonfig":
-            welcome = dict()
-            welcome['name'] = self.context.getId()
-            welcome['title'] = self.context.title
-            welcome['description'] = self.context.description
-            welcome['bodytext'] = self.get_ella_content()
-            welcome['services'] = self.get_ella_services()
-            return welcome
-        else:    
-            content = self.get_content()
-        return jsonlib.write(content)
 
     def formatcontent(self, obj):
         article = dict()
@@ -46,12 +33,156 @@ class EllaView(BrowserView):
             content.append(self.formatcontent(self.context))
         return content
 
+##############################################################################################
+
+    def create_additional(self, addlist):
+        reqs = list()
+        props = dict()
+        for prop in addlist:
+            key = prop.get('addid')
+            props[key] = dict
+            props[key]['title'] = prop.get('addtitle')
+            props[key]['type'] = prop.get('addtype')
+            if prop.get('pflichtfeld'):
+                reqs.append(key)
+        additional = dict()
+        additional['type'] = 'object'
+        additional['properties'] = props
+        additional['required'] = reqs
+        return additional
+
+    def create_servicebuttons(self, buttons):
+        servicebuttons = list()
+        for button in buttons:
+            servicebutton = dict()
+            servicebutton['name'] = button.name
+            servicebutton['title'] = button.title
+            servicebutton['cssclass'] = button.cssclass
+            servicebutton['method'] = button.method
+            if button.additional:
+                servicebutton['additional'] = self.create_additionl(button.additional)
+            servicebuttons.append(servicebutton)
+        return servicebutton
+
+    def create_single_service(self, service):
+        service = dict()
+        service['name'] = service.getId()
+        service['title'] = service.title
+        service['description'] = service.description
+        service['type'] = service.servicetyp
+        form = service.serviceref.to_object
+        json_schema_view = ploneapi.content.get_view(name='schema-view', context=form, request=self.request)
+        service['form'] = json_schema_view.__call__()
+        ui_schema_view = ploneapi.content.get_view(name='ui-schema-view', context=form, request=self.request)
+        service['ui'] = ui_schema_view.__call__()
+        buttons = service.listFolderContents(contentFilter={"portal_type" : "Servicebutton"})
+        service['formactions'] = self.create_servicebuttons(buttons)
+
+    def create_group_service(self,service):
+        servicelist = list()
+        subservices = service.listFolderContents(contentFilter={"portal_type" : "Service"})
+        for subservice in subservices:
+            typ = subservice.servicetyp
+            if typ == 'service':
+                servicelist.append(self.create_single_service(subservice))
+            else:
+                servicelist.append(self.create_single_page(subservice))
+        service = dict()
+        service['name'] = service.getId()
+        service['title'] = service.title
+        service['description'] = service.description
+        service['type'] = service.servicetyp
+        service['services'] = servicelist
+        return servicelist
+
+    def create_page_service(self, service):
+        service = dict()
+        service['name'] = service.getId()
+        service['title'] = service.title
+        service['description'] = service.description
+        service['type'] = service.servicetyp
+        pageobj = service.serviceref.to_object
+        text = getattr(pageobj, 'text', u'')
+        if text:
+            text = text.output
+        image = getattr(pageobj, 'image', u'')
+        if image:
+            image = '%s/@@download/image' % pageobj.absolute_url()
+        service['text'] = format_ella_single(title, text, image)
+        return service
+
+    def create_welcome_page(self, page, nav):
+        service = dict()
+        service['name'] = page.getId()
+        service['title'] = page.title
+        service['description'] = page.description
+        service['type'] = 'page'
+        text = getattr(page, 'text', u'')
+        if text:
+            text = text.output
+        image = getattr(page, 'image', u'')
+        if image:
+            image = '%s/@@download/image' % page.absolute_url()
+        service['text'] = format_ella_single(title, text, image) + nav
+        return service
+
+    def create_navigations(self, startseiten):
+        naventries = []
+        page = 1
+        for i in startseiten:
+            naventries.append("""<li class="page-item edi_active"><a class="page-link" href="#/services/%s">%s</a></li>""" % (i.get('id'), str(page)))
+            page += 1
+        navs = []
+        for i in range(len(startseiten)):
+            navigation = """\
+<nav aria-label="Navigation">
+  <ul class="pagination justify-content-center">"""
+            for k in range(len(naventries)):
+                naventry = naventries[k]
+                if i == k:
+                    naventry = naventry.replace(u'edi_active', u'active')
+                else:
+                    naventry = naventry.replace(u'edi_active', u'')
+                navigation += naventry
+            navigation += """</ul></nav>"""
+            navs.append(navigation)
+        return navs
+
+    def create_welcome_services(self):
+        servicelist = list()
+        startseiten = [obj.to_object for obj in self.context.startseiten]
+        navigations = self.create_navigations(startseiten)
+        for page, nav in zip(startseiten, navigations):
+            servicelist.append(self.create_welcome_page(page, nav))
+        groupnametitle = self.context.groupname.split('#')
+        service = dict()
+        service['name'] = groupnametitle[0]
+        service['title'] = groupnametitle[1]
+        service['description'] = self.context.description
+        service['type'] = 'group'
+        service['services'] = servicelist
+        return service
+
+    def get_ella_services(self):
+        services = []
+        for service in self.context.listFolderContents(contentFilter={"portal_type" : "Service"}):
+            typ = service.servicetyp
+            if typ == 'service':
+                services.append(self.create_single_service(service))
+            elif typ == 'group':
+                services.append(self.create_group_service(service))
+            else:
+                services.append(self.create_page_service(service))
+        if len(self.context.startseiten) > 1:
+            services.append(self.create_welcome_services())
+        return services
+
     def format_ella_single(self, title, text, image):
         tm = Template(self.context.bodytemplate)
         bodytext = tm.render(ella_title = title, ella_bodytext = text, ella_image = image)
         return bodytext
 
-    def format_ella_startnavi(self, startseiten)
+    def format_ella_startnavi(self, startseiten):
         startid = startseiten[0].to_object.getId()
         navigation = """\
 <nav aria-label="Navigation">
@@ -85,7 +216,21 @@ class EllaView(BrowserView):
             if image:
                 image = '%s/@@download/image' % obj.absolute_url()
             content = format_ella_single(title, text, image)
-            if self.context.startseiten > 1:
+            if len(self.context.startseiten) > 1:
                 navi = format_ella_startnavi(self.context.startseiten)
                 content += navi
         return content
+
+    def __call__(self):
+        if self.context.portal_type == "EllaKonfig":
+            welcome = dict()
+            welcome['name'] = self.context.getId()
+            welcome['title'] = self.context.title
+            welcome['description'] = self.context.description
+            welcome['bodytext'] = self.get_ella_content()
+            welcome['services'] = self.get_ella_services()
+            content = welcome
+        else:
+            content = self.get_content()
+        return jsonlib.write(content)
+
