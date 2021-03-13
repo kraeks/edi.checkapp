@@ -9,6 +9,8 @@ from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from zope.interface import implementer
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+from zope.interface import Invalid
+from zope.interface import invariant
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 
 from edi.checkapp import _
@@ -25,7 +27,7 @@ class IService(model.Schema):
     
     servicetyp = schema.Choice(title=u"Servicetyp", default='service', vocabulary=servicetyp)
 
-    serviceref = RelationChoice(title="Referenz auf das Formular, die Checkliste oder Seite",
+    serviceref = RelationChoice(title="Referenz auf das Formular (z.B. Checkliste), Seite oder Nachricht.",
             vocabulary='plone.app.vocabularies.Catalog',
             required=False)
 
@@ -34,10 +36,18 @@ class IService(model.Schema):
         RelatedItemsFieldWidget,
         pattern_options={
             "basePath": make_relation_root_path,
-            "selectableTypes": ["Fragebogen"],
+            "selectableTypes": ["Fragebogen", "Document", "News Item"],
         })
 
-
+    @invariant
+    def serviceref_invariant(data):
+        if data.servicetyp == 'group':
+            if data.serviceref:
+                raise Invalid(u'Bei Typ = Gruppe von Services darf keine Referenz eingetragen werden.')
+        else:
+            if not data.serviceref:
+                raise Invalid(u'Es muss eine Referenz auf ein Formular, Seite oder Nachricht eingetragen werden.')
+    
 @implementer(IService)
 class Service(Container):
     """
