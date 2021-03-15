@@ -27,7 +27,7 @@
           <div class="mt-3" tal:condition="python: context.modaltext or context.additional">
             <div class="card" style="width: 25rem;">
               <div class="card-body">
-                <h5 class="card-title">Zusatzangaben</h5>
+                <h5 tal:condition="context/modaltitle" class="card-title" tal:content="context/modaltitle">Zusatzangaben</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Wird dem Benutzer bei Klick auf den Button angezeigt</h6>
 		<p class="card-text" tal:condition="context/modaltext" tal:content="context/modaltext" />
                 <div tal:repeat="add context/additional" class="form-group">

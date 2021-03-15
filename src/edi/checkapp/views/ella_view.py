@@ -59,6 +59,10 @@ class EllaView(BrowserView):
             servicebutton['title'] = button.title
             servicebutton['cssclass'] = button.cssclass
             servicebutton['method'] = button.method
+            if button.modaltitle:
+                servicebutton['modaltitle'] = button.modaltitle
+            if button.modaltext:
+                servicebutton['modaltext'] = button.modaltext
             if button.additional:
                 servicebutton['additional'] = self.create_additional(button.additional)
             servicebuttons.append(servicebutton)
