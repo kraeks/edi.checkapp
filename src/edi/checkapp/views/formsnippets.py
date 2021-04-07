@@ -18,7 +18,10 @@ def formatsnippet(context, snippet):
     if context.xseinheit:
         snippet = snippet.replace("edi_context_xseinheit", context.xseinheit)
     if context.dep_fields:
-        targetid = 'edi'+context.dep_fields.to_object.UID()
+        try:
+            targetid = 'edi'+context.dep_fields.to_object.UID()
+        except:
+            targetid = 'edi'
         target = 'data-toggle="collapse" data-target="#%s"' % targetid
         snippet = snippet.replace("edi_data_toggle", target)
     else:

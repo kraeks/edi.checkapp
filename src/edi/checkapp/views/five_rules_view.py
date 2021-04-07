@@ -89,7 +89,8 @@ class FiveRulesView(BrowserView):
                     entry['frage'] = obj.frage.output
                 for opt_object in obj.listFolderContents(contentFilter={"portal_type" : "Antwortoption"}):
                     if opt_object.dep_fields:
-                        depends.append(opt_object.dep_fields.to_object.getId())
+                        if opt_object.dep_fields.to_object:
+                            depends.append(opt_object.dep_fields.to_object.getId())
                 entry['snippet'] = ploneapi.content.get_view('fragestellung-view', obj, self.request).create_formmarkup()    
                 entry['editurl'] = obj.absolute_url() + '/edit'
                 if obj.thema in themen:

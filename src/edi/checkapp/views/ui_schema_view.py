@@ -18,6 +18,7 @@ class UiSchemaView(BrowserView):
         context = self.context
         kopffragen = context.kopffragen
         elements = list()
+        headelements = list()
         for i in kopffragen:
             element = dict()
             id = idnormalizer.normalize(i.get('frage'))
@@ -37,7 +38,12 @@ class UiSchemaView(BrowserView):
                 element['type'] = "Control"
                 element['scope'] = "#/properties/%s" % id
                 element['options'] = {'stacked':True}
-            elements.append(element)
+            headelements.append(element)
+        header = dict()
+        header['type'] = 'VerticalLayout'
+        header['options'] = {cssClass: "bg-light greyBackground"}
+        header['elements'] = headelements
+        elements.append(header)
         fiverulesview = api.content.get_view(name='five-rules-view', context=self.context, request=self.request)
         content = fiverulesview.get_content()
         for thema in content:
@@ -80,7 +86,10 @@ class UiSchemaView(BrowserView):
                 if antworttyp in ['radio', 'checkbox']:
                     for option in k['optionen']:
                         if option.dep_fields:
-                            targetuid = 'edi' + option.dep_fields.to_object.UID()
+                            try:
+                                targetuid = 'edi' + option.dep_fields.to_object.UID()
+                            except:
+                                targetuid = 'edi'
                             form_deps[targetuid] = {'scope':groupelement['scope'], 'type':'EQUALS', 'referenceValue':option.title}
                 groupelements.append(groupelement)
             group['elements'] = groupelements

@@ -13,10 +13,15 @@ from edi.checkapp import _
 
 buttonfarbe = SimpleVocabulary((
     SimpleTerm(value="primary", token="primary", title="Blau"),
+    SimpleTerm(value="outline-primary", token="outline-primary", title="blauer Rand"),
     SimpleTerm(value="secondary", token="secondary", title="Grau"),
+    SimpleTerm(value="outline-secondary", token="outline-secondary", title="grauer Rand"),
     SimpleTerm(value="info", token="info", title="Türkis"),
+    SimpleTerm(value="outline-info", token="outline-info", title="türkiser Rand"),
     SimpleTerm(value="success", token="success", title="Grün"),
+    SimpleTerm(value="outline-success", token="outline-success", title="grüner Rand"),
     SimpleTerm(value="danger", token="danger", title="Rot")
+    SimpleTerm(value="outline-danger", token="outline-danger", title="roter Rand")
     ))
 
 method = SimpleVocabulary((
