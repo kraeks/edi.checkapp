@@ -20,7 +20,7 @@ buttonfarbe = SimpleVocabulary((
     SimpleTerm(value="outline-info", token="outline-info", title="türkiser Rand"),
     SimpleTerm(value="success", token="success", title="Grün"),
     SimpleTerm(value="outline-success", token="outline-success", title="grüner Rand"),
-    SimpleTerm(value="danger", token="danger", title="Rot")
+    SimpleTerm(value="danger", token="danger", title="Rot"),
     SimpleTerm(value="outline-danger", token="outline-danger", title="roter Rand")
     ))
 
