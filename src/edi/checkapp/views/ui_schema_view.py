@@ -41,7 +41,7 @@ class UiSchemaView(BrowserView):
             headelements.append(element)
         header = dict()
         header['type'] = 'VerticalLayout'
-        header['options'] = {cssClass: "bg-light greyBackground"}
+        header['options'] = {"cssClass": "bg-light greyBackground"}
         header['elements'] = headelements
         elements.append(header)
         fiverulesview = api.content.get_view(name='five-rules-view', context=self.context, request=self.request)

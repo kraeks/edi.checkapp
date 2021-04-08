@@ -28,7 +28,8 @@ method = SimpleVocabulary((
     SimpleTerm(value="GET", token="GET", title="GET"),
     SimpleTerm(value="POST", token="POST", title="POST"),
     SimpleTerm(value="PUT", token="PUT", title="PUT"),
-    SimpleTerm(value="REDIRECT", token="REDIRECT", title="REDIRECT")
+    SimpleTerm(value="REDIRECT", token="REDIRECT", title="REDIRECT"),
+    SimpleTerm(value="SAVE", token="SAVE", title="SAVE")
     ))
 
 field = SimpleVocabulary((
