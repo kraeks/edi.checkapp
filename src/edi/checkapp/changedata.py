@@ -1,11 +1,13 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
+import base64
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm, mm
 from reportlab.pdfbase.ttfonts import TTFont
 from Products.Five import BrowserView
 from plone.i18n.normalizer import idnormalizer
-from edi.checkapp.pdfgen import createpdf
+from edi.checkapp.pdf.pdfgen import createpdf
+from bs4 import BeautifulSoup
 from plone import api
 import tempfile
 import requests
@@ -17,21 +19,53 @@ class PDFCreator(BrowserView):
 
     def __call__(self):
         body = self.request.get('BODY')
+        data = dict()
+        printdata = dict()
         if body:
             body_unicode = self.request.get('BODY').decode('utf-8')
             data = json.loads(body_unicode)
-            print(data)
 
-        filehandle = tempfile.TemporaryFile()
+        if data:
+            printdata = self.create_printdata(data)
 
-        pdf = createpdf(filehandle)
-        pdf.seek(0)
+        if printdata:
+            filehandle = tempfile.TemporaryFile()
+            createpdf(filehandle, printdata)
+            filehandle.seek(0)
+            return base64.b64encode(filehandle.read())
+        return None
 
-        RESPONSE = self.request.response
-        RESPONSE.setHeader('content-type', 'application/pdf')
-        RESPONSE.setHeader('content-disposition', 'attachment; filename=zertifikat.pdf')
-        return pdf.read()
-
+    def create_printdata(self, data):
+        printdata = dict()
+        printdata['fragebogenName'] = data.get('fragebogenName')
+        printdata['dateiname'] = data.get('name')
+        printdata['maschinentyp'] = data.get('maschinentyp')
+        printdata['maschinennummer'] = data.get('maschinennummer')
+        printdata['hersteller'] = data.get('hersteller')
+        fragen = data.get('result').get('items')
+        tabelle = list()
+        for i in data.get('history'):
+            row = list()
+            frage = fragen[i]
+            html = frage.get('frage').get('data')
+            soup = BeautifulSoup(html, features="html.parser")
+            text = soup.get_text().strip()
+            row.append(text)
+            row.append(frage.get('thema').get('title'))
+            row.append(data.get('selected')[i])
+            notizen = data.get('notizen')
+            try:
+                notiz = notizen[i]
+                if notiz:
+                    row.append(notiz)
+                else:
+                    row.append('')
+            except:
+                row.append('')
+            tabelle.append(row)
+        printdata['tabelle'] = tabelle
+        printdata['globaleNotizen'] = data.get('globalNotizen')
+        return printdata
 
 class ChecklistLogin(BrowserView):
 
