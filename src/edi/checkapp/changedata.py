@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import base64
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm, mm
@@ -29,16 +30,9 @@ class PDFCreator(BrowserView):
 
         if printdata:
             filehandle = tempfile.TemporaryFile()
-            filehandle = u'/tmp/new.pdf'
             createpdf(filehandle, printdata)
-            pdf = open('/tmp/new.pdf', 'rb')
-            pdf.seek(0)
-            #filehandle.seek(0)
-
-            RESPONSE = self.request.response
-            RESPONSE.setHeader('content-type', 'application/pdf;charset=utf-8')
-            RESPONSE.setHeader('content-disposition', 'attachment; filename=%s.pdf' %printdata.get('dateiname'))
-            return pdf.read()
+            filehandle.seek(0)
+            return base64.b64encode(filehandle.read())
         return None
 
     def create_printdata(self, data):
@@ -56,7 +50,6 @@ class PDFCreator(BrowserView):
             html = frage.get('frage').get('data')
             soup = BeautifulSoup(html, features="html.parser")
             text = soup.get_text().strip()
-            #text = text.encode('utf-8')
             row.append(text)
             row.append(frage.get('thema').get('title'))
             row.append(data.get('selected')[i])
@@ -71,8 +64,7 @@ class PDFCreator(BrowserView):
                 row.append('')
             tabelle.append(row)
         printdata['tabelle'] = tabelle
-        printdata['globaleNotizen'] = data.get('globaleNotizen')
-        import pdb;pdb.set_trace()
+        printdata['globaleNotizen'] = data.get('globalNotizen')
         return printdata
 
 class ChecklistLogin(BrowserView):

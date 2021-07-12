@@ -55,6 +55,7 @@ class NumberedCanvas(canvas.Canvas):
         for state in self._saved_page_states:
             self.__dict__.update(state)
             self.draw_page_number(num_pages)
+            canvas.Canvas.setTitle(self, title="Sicher investieren")
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
