@@ -32,8 +32,9 @@ class RedaktionsAnsicht(BrowserView):
                     option['aktion'] = u'nächste Frage'
                     if k.get('aktion'):
                         aktion = ploneapi.content.get(UID=k['aktion'])
-                        aktionstext = aktion.title
-                        option['aktion'] = aktionstext
+                        if aktion:
+                            aktionstext = aktion.title
+                            option['aktion'] = aktionstext
                     format_optionen.append(option)
                 entry['optionen'] = format_optionen    
                 entry['editurl'] = obj.absolute_url() + '/edit'
