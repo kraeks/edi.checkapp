@@ -49,7 +49,7 @@ setup(
         'plone.restapi',
         'plone.app.dexterity',
         'collective.z3cform.datagridfield',
-        'reportlab==3.5.54',
+        'reportlab>=3.5.54',
         'jsonlib-python3',
         'jinja2',
         'apply',
