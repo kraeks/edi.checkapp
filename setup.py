@@ -14,7 +14,7 @@ long_description = '\n\n'.join([
 
 setup(
     name='edi.checkapp',
-    version='1.0.pwa',
+    version='1.0.pwa.dev.dev0',
     description="Checklist Application for Plone",
     long_description=long_description,
     # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers
