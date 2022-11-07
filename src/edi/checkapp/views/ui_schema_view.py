@@ -26,6 +26,10 @@ class UiSchemaView(BrowserView):
             if antworttyp in ['text', 'datetime-local', 'date']:
                 element['type'] = "Control"
                 element['scope'] = "#/properties/%s" % id
+            elif antworttyp == 'datetime-hidden':
+                element['type'] = "Control"
+                element['scope'] = "#/properties/%s" % id
+                element['options'] = {'hidden':True}
             elif antworttyp == 'textarea':
                 element['type'] = "Control"
                 element['scope'] = "#/properties/%s" % id
@@ -55,7 +59,8 @@ class UiSchemaView(BrowserView):
             groupelements = list()
             for k in content[thema]:
                 groupelement = dict()
-                groupelement['options'] = dict()
+                if k['typ'] != "HTML":
+                    groupelement['options'] = dict()
                 antworttyp = k['typ']
                 if antworttyp in ['text', 'number']:
                     groupelement['type'] = "Control"
@@ -81,6 +86,9 @@ class UiSchemaView(BrowserView):
                     groupelement['type'] = "Control"
                     groupelement['scope'] = "#/properties/%s" % k['id']
                     groupelement['options']['stacked'] = True
+                elif antworttyp == 'HTML':
+                    groupelement['type'] = "HTML"
+                    groupelement['htmlData'] = k['snippet']
                 if k['id'] in form_deps:
                     groupelement['showOn'] = form_deps[k['id']]
                 if antworttyp in ['radio', 'checkbox']:
@@ -91,7 +99,8 @@ class UiSchemaView(BrowserView):
                             except:
                                 targetuid = 'edi'
                             form_deps[targetuid] = {'scope':groupelement['scope'], 'type':'EQUALS', 'referenceValue':option.title}
-                groupelements.append(groupelement)
+                if groupelement:            
+                    groupelements.append(groupelement)
             group['elements'] = groupelements
             elements.append(group)
 

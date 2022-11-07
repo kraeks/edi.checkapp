@@ -76,6 +76,8 @@ class FiveRulesView(BrowserView):
                 entry['title'] = obj.title
                 entry['frage'] = u''
                 entry['placeholder'] = obj.platzhalter
+                entry['default'] = getattr(obj, 'default', '')
+                entry['hidden'] = getattr(obj, 'hidden', False)
                 entry['ausrichtung'] = obj.ausrichtung
                 entry['einheit'] = obj.einheit
                 entry['typ'] = obj.antworttyp
@@ -95,6 +97,19 @@ class FiveRulesView(BrowserView):
                 entry['editurl'] = obj.absolute_url() + '/edit'
                 if obj.thema in themen:
                     themen[obj.thema].append(entry)
+            elif k.portal_type == 'Hinweistext':
+                obj = k.getObject()
+                entry = {}
+                entry['id'] = 'edi'+obj.UID()
+                entry['title'] = ""
+                entry['showtitle'] = False
+                entry['class'] = ""
+                entry['typ'] = 'HTML'
+                entry['snippet'] = obj.hinweis.output
+                entry['required'] = False
+                if hasattr(obj, 'thema'):
+                    if obj.thema in themen:
+                        themen[obj.thema].append(entry)
         return themen
 
     def get_themenbereiche(self):

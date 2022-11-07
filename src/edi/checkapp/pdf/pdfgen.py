@@ -111,7 +111,11 @@ def create_tabelle(tabelle, cols, header, coronastyles):
     for zeile in tabelle:
         row = []
         for spalte in zeile:
-            row.append(Paragraph(spalte, styles['entry_normal']))
+            if spalte:
+                row.append(Paragraph(spalte, styles['entry_normal']))
+            else:
+                spalte = u' '
+                row.append(Paragraph(spalte, styles['entry_normal']))
         mytable.append(row)
 
     table = Table(mytable, repeatRows=1, colWidths=colWidths, style=[('GRID', (0, 0), (-1, -1), 1, grey),
@@ -220,7 +224,11 @@ def createpdf(filehandle, data):
     story.append(Paragraph(u"Name des Bearbeiters", entry_free))
     story.append(textbox_unternehmer)
 
-    story.append(Spacer(0 * cm, 0.5 * cm))
+    story.append(Spacer(0 * cm, 0.8 * cm))
+
+    hinweistext = """\
+Diese Auswertung zeigt Ihnen, wie die von Ihnen bewertete Maschine in wichtigen arbeitsschutzrelevanten Punkten einzuschätzen ist. Sie können erkennen, ob die Maschine allen hier behandelten Punkten entspricht oder ob gegebenenfalls Klärungs- und/oder Handlungsbedarf besteht. Wir empfehlen Ihnen, bereits im Vorfeld der Investition offene Fragen mit dem Hersteller zu klären, um gegebenenfalls kostenintensive Nachrüstungen zu vermeiden."""
+    story.append(Paragraph(hinweistext, entry_normal))
 
     story.append(Paragraph(u"Ihre Daten zur Maschine", h2))
     tabelle = list()
@@ -228,7 +236,9 @@ def createpdf(filehandle, data):
     header = []
     tabelle.append(['Maschinentyp', data.get('maschinentyp')])
     tabelle.append(['Maschinennummer', data.get('maschinennummer')])
+    tabelle.append(['Baujahr', data.get('baujahr')])
     tabelle.append(['Hersteller', data.get('hersteller')])
+    tabelle.append(['Fragebogenname', data.get('fragebogenName')])
     tabelle.append(['Dateiname', data.get('dateiname')])
     story.append(create_tabelle(tabelle, cols, header, coronastyles))
 
@@ -257,7 +267,35 @@ def createpdf(filehandle, data):
     story.append(InteractiveTextField('massnahme7', 500))
     story.append(InteractiveTextField('massnahme8', 500))
 
-    story.append(Spacer(0 * cm, 14 * cm))
+    kontakt1 = """\
+•	Branchengebiet Druck und Papierverarbeitung unter www.bgetem.de, Webcode 14739934"""
+    kontakt2 = """\
+•	Ihr zuständiges Präventionszentrum und die für Sie zuständige Aufsichtsperson unter www.bgetem.de, Webcode 11981123"""
+    kontakt3 = """\
+•	Weitere Informationen zum Thema Arbeitssicherheit finden Sie unter www.bgetem.de, Webcode 13335297"""
+
+    recht = """\
+Bitte beachten Sie, dass diese Auswertung eine vollständige Bewertung der konkreten Gefährdungen der Maschine am vorgesehenen Einsatzort (Gefährdungsbeurteilung) nicht ersetzen kann.
+Die BG ETEM versucht nach besten Kräften, die Zuverlässigkeit und Fehlerfreiheit der präsentierten Fragen und Hinweise sicherzustellen. Aufgrund der weltweit üblichen Haftung für Texte und Produkte machen wir auf Folgendes aufmerksam:
+Die Angaben in dieser Internet-Anwendung der BG ETEM wurden sorgfältig nach dem derzeitigen Stand der Technik und des Wissens zusammengestellt. Die Informationen und Fragen erheben keinen Anspruch auf Vollständigkeit. Die BG ETEM übernimmt keine Gewähr für die Aktualität, Richtigkeit, Vollständigkeit oder Qualität der hier veröffentlichten Informationen.
+Haftungsansprüche, welche sich auf Schäden materieller oder ideeller Art beziehen, die entweder durch die Nutzung oder Nichtnutzung der dargebotenen Inhalte bzw. durch die Nutzung fehlerhafter und unvollständiger Inhalte verursacht wurden, sind grundsätzlich ausgeschlossen, sofern seitens der BG ETEM kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.
+Die BG ETEM behält sich ausdrücklich vor, Teile der Seiten oder das gesamte Informationsangebot der Anwendung ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.
+Der gesamte Inhalt der Anwendung ist urheberrechtlich geschützt. Das Kopieren/Vervielfältigen einzelner Seiten und/oder Teilbereiche der Seiten ist nur insoweit gestattet, als es von dem zur Verfügung gestellten Zweck gedeckt ist. Copyrightvermerke dürfen nicht entfernt oder verändert werden. Jegliche Vervielfältigung, Übermittlung oder Bearbeitung ist außerhalb der engen Grenzen des Urheberrechts ohne vorherige schriftliche Zustimmung der BG ETEM untersagt.
+Sofern Teile oder einzelne Formulierungen dieses Textes der geltenden Rechtslage nicht, nicht mehr oder nicht vollständig entsprechen sollten, bleiben die übrigen Teile des Dokumentes in ihrem Inhalt und ihrer Gültigkeit davon unberührt."""
+
+    story.append(Spacer(0 * cm, 0.5 * cm))
+    story.append(Paragraph(u"Kontakt", h2))
+    story.append(Paragraph(kontakt1, entry_normal))
+    story.append(Spacer(0 * cm, 0.2 * cm))
+    story.append(Paragraph(kontakt2, entry_normal))
+    story.append(Spacer(0 * cm, 0.2 * cm))
+    story.append(Paragraph(kontakt3, entry_normal))
+
+    story.append(Spacer(0 * cm, 0.5 * cm))
+    story.append(Paragraph(u"Rechtlicher Hinweis", h2))
+    story.append(Paragraph(recht, entry_normal))
+
+    story.append(Spacer(0 * cm, 2.5 * cm))
     schlusstext = u"""Diese Checkliste ergänzt die betriebliche Gefährdungsbeurteilung."""
     schlussline = u'<font color="#008c8e"><b>%s</b></font>' % schlusstext
     story.append(Paragraph(schlussline, bodybold))

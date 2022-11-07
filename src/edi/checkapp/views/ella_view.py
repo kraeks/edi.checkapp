@@ -90,8 +90,10 @@ class EllaView(BrowserView):
             typ = subservice.servicetyp
             if typ == 'service':
                 servicelist.append(self.create_single_service(subservice))
+            elif typ in ['audio', 'video']:
+                servicelist.append(self.create_media_service(subservice, typ))
             else:
-                servicelist.append(self.create_single_page(subservice))
+                servicelist.append(self.create_page_service(subservice))
         ellaservice = dict()
         ellaservice['name'] = service.getId()
         ellaservice['title'] = service.title
@@ -100,12 +102,57 @@ class EllaView(BrowserView):
         ellaservice['services'] = servicelist
         return ellaservice
 
+    def create_media_service(self, service, mediatype):
+        mediaservice = dict()
+        mediacontainer = service.serviceref.to_object
+        mediafiles = self.create_mediafiles(mediacontainer.getFolderContents(), mediatype)
+        mediaservice['name'] = mediacontainer.id
+        mediaservice['title'] = mediacontainer.title
+        mediaservice['description'] = mediacontainer.description
+        mediaservice['type'] = mediatype
+        mediaservice['textbefore'] = ''
+        mediaservice['textafter'] = ''
+        if mediacontainer.text:
+            if mediacontainer.text.output:
+                mediaservice['textbefore'] = mediacontainer.text.output
+        if mediacontainer.schlusstext:
+            if mediacontainer.schlusstext.output:
+                mediaservice['textafter'] = mediacontainer.schlusstext.output
+        mediaservice['mediafiles'] = mediafiles
+        return mediaservice
+
+    def create_mediafiles(self, brains, mediatype):
+        mediafiles = []
+        for mediabrain in brains:
+            mediadict = dict()
+            mediafile = mediabrain.getObject()
+            mediadict['name'] = mediafile.id
+            mediadict['title'] = mediafile.title
+            mediadict['description'] = mediafile.description
+            if mediatype == 'audio':
+                mediadict['url'] = f'{mediafile.absolute_url()}/@@download/audio/{mediafile.audio.filename}'
+                mediadict['mimetype'] = 'audio/mpeg'
+            elif mediatype == 'video':
+                mediadict['url'] = f'{mediafile.absolute_url()}/@@download/video/{mediafile.video.filename}'
+                mediadict['mimetype'] = 'video/mp4'
+            mediadict['imageurl'] = ''
+            mediadict['imagecaption'] = ''
+            mediadict['transcript'] = ''
+            if mediafile.image:
+                mediadict['imageurl'] = f'{mediafile.absolute_url()}/@@images/image/large'
+            if mediafile.image_caption:
+                mediadict['imagecaption'] = mediafile.image_caption
+            if mediafile.transcript:
+                mediadict['transcript'] = mediafile.transcript
+            mediafiles.append(mediadict)
+        return mediafiles
+            
     def create_page_service(self, service):
-        service = dict()
-        service['name'] = service.getId()
-        service['title'] = service.title
-        service['description'] = service.description
-        service['type'] = service.servicetyp
+        ellaservice = dict()
+        ellaservice['name'] = service.getId()
+        ellaservice['title'] = service.title
+        ellaservice['description'] = service.description
+        ellaservice['type'] = service.servicetyp
         pageobj = service.serviceref.to_object
         text = getattr(pageobj, 'text', u'')
         if text:
@@ -113,8 +160,8 @@ class EllaView(BrowserView):
         image = getattr(pageobj, 'image', u'')
         if image:
             image = '%s/@@download/image' % pageobj.absolute_url()
-        service['text'] = format_ella_single(title, text, image)
-        return service
+        ellaservice['text'] = self.format_ella_single(pageobj.title, text, image)
+        return ellaservice
 
     def create_welcome_page(self, page, nav):
         service = dict()
@@ -176,8 +223,10 @@ class EllaView(BrowserView):
                 services.append(self.create_single_service(service))
             elif typ == 'group':
                 services.append(self.create_group_service(service))
-            else:
+            elif typ == 'page':
                 services.append(self.create_page_service(service))
+            elif typ in ['audio', 'video']:
+                services.append(self.create_media_service(service, typ))
         if len(self.context.startseiten) > 1:
             services.append(self.create_welcome_services())
         return services

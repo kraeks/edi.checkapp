@@ -18,7 +18,9 @@ from edi.checkapp import _
 servicetyp = SimpleVocabulary((
     SimpleTerm(value='service', token='service', title='Formular/Checkliste'),
     SimpleTerm(value='page', token='page', title='Seite'),
-    SimpleTerm(value='group', token='group', title='Gruppe von Formularen oder Seiten')
+    SimpleTerm(value='group', token='group', title='Gruppe von Formularen oder Seiten'),
+    SimpleTerm(value='audio', token='audio', title='Audiodatei(en)'),
+    SimpleTerm(value='video', token='video', title='Videodatei(en)'),
     ))
 
 class IService(model.Schema):
@@ -36,7 +38,7 @@ class IService(model.Schema):
         RelatedItemsFieldWidget,
         pattern_options={
             "basePath": make_relation_root_path,
-            "selectableTypes": ["Fragebogen", "Document", "News Item"],
+            "selectableTypes": ["Fragebogen", "Document", "News Item", "Audiocontainer", "Videocontainer"],
         })
 
     @invariant

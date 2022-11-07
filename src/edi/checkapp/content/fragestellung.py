@@ -88,6 +88,8 @@ class IFragestellung(model.Schema):
 
     platzhalter = schema.TextLine(title=u'Platzhalter (nur bei Antworttypen "Textzeile" oder "Text")', required=False)
 
+    default = schema.TextLine(title=u'Standardwert (Default) oder Methodenname', required=False)
+
     ausrichtung = schema.Choice(title=u"Ausrichtung auswählen",
                      source=Direction,
                      default=u'left',
@@ -98,6 +100,8 @@ class IFragestellung(model.Schema):
                      required=False)
 
     required = schema.Bool(title=u"Markieren falls die Fragestellung eine Pflichtfeld darstellt.", default=True)
+
+    hidden = schema.Bool(title=u"Markieren falls das Feld in der Darstellung versteckt werden soll.", default=False)
 
     notiz = schema.Bool(title=u"Notizenfeld anbieten",
                         description=u"Anklicken wenn Sie eine Notiz zu dieser Fragestellung erlauben wollen.")

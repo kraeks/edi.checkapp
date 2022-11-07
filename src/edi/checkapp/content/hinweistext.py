@@ -6,7 +6,8 @@ from plone.dexterity.content import Item
 from plone.supermodel import model
 # from plone.supermodel.directives import fieldset
 # from z3c.form.browser.radio import RadioFieldWidget
-# from zope import schema
+from zope import schema
+from edi.checkapp.content.fragestellung import possibleThemen
 from zope.interface import implementer
 
 
@@ -16,6 +17,11 @@ from zope.interface import implementer
 class IHinweistext(model.Schema):
     """ Marker interface and Dexterity Python Schema for Hinweistext
     """
+
+    thema = schema.Choice(title=u"Auswahl des Themas für die Frage",
+                          source=possibleThemen,
+                          required=False)
+
     hinweis = RichText(title=u"Hinweistext")
 
 
