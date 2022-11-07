@@ -31,6 +31,10 @@ class SchemaView(BrowserView):
             elif antworttyp == 'datetime-local':
                 props[id]['type'] = "string"
                 props[id]['format'] = "date-time"
+            elif antworttyp == 'datetime-hidden':
+                props[id]['type'] = "string"
+                props[id]['format'] = "date-time"
+                props[id]['default'] = "$now"
             elif antworttyp == 'date':
                 props[id]['type'] = "string"
                 props[id]['format'] = "date"

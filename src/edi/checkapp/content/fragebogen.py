@@ -23,6 +23,7 @@ answertypes = [
          SimpleTerm(u'text', u'text', u'Textzeile'),
          SimpleTerm(u'number', u'number', u'Zahlenwert'),
          SimpleTerm(u'datetime-local', u'datetime-local', u'Datum und Uhrzeit'),
+         SimpleTerm(u'datetime-hidden', u'datetime-hidden', u'Datum und Uhrzeit (versteckt)'),
          SimpleTerm(u'date', u'date', u'Datum'),
         ]
 Antworttypen = SimpleVocabulary(answertypes)

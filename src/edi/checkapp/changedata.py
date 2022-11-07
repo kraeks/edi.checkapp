@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import base64
+from zopyx.plone.persistentlogger.logger import IPersistentLogger
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm, mm
@@ -37,8 +38,10 @@ class PDFCreator(BrowserView):
 
     def create_printdata(self, data):
         printdata = dict()
+        print(data)
         printdata['fragebogenName'] = data.get('fragebogenName')
         printdata['dateiname'] = data.get('name')
+        printdata['baujahr'] = data.get('jahr')
         printdata['maschinentyp'] = data.get('maschinentyp')
         printdata['maschinennummer'] = data.get('maschinennummer')
         printdata['hersteller'] = data.get('hersteller')
@@ -267,3 +270,38 @@ class PDFDownload(BrowserView):
         RESPONSE.setHeader('content-type', 'application/pdf')
         RESPONSE.setHeader('content-disposition', 'attachment; filename=%s.pdf' %contentid)
         return myfile.read()
+
+
+class AppInfo(BrowserView):
+
+    def __call__(self):
+
+        text = ''
+        if hasattr(self.context, 'text'):
+            if self.context.text:
+                text = self.context.text.output
+
+        title = self.context.title
+        description = self.context.description
+
+        json = {'title':title, 'description':description, 'text':text}
+
+        payload = jsonlib.write(json)
+        return payload
+
+class Logger(BrowserView):
+
+    def __call__(self):
+        adapter = IPersistentLogger(self.context)
+        data = {}
+        body = self.request.get('BODY')
+        if body:
+            body_unicode = self.request.get('BODY').decode('utf-8')
+            data = json.loads(body_unicode)
+            if data:
+                error = data.get('error', u'Unspezified Error')
+                details = data.get('details', u'NO DETAILS')
+                adapter.log(error, level='error', details=details)
+                data['message'] = 'Logentry saved'
+        data['message'] = 'Error reading logentry'
+        return jsonlib.write(data)
