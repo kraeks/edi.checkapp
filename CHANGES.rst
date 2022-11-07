@@ -2,10 +2,10 @@ Changelog
 =========
 
 
-1.3 (unreleased)
+1.3 (2022-11-07)
 ----------------
 
-- Nothing changed yet.
+- Logger-View entfernt
 
 
 1.2 (2022-11-07)

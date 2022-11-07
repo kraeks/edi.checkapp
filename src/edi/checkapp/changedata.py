@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import base64
-from zopyx.plone.persistentlogger.logger import IPersistentLogger
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm, mm
@@ -288,20 +287,3 @@ class AppInfo(BrowserView):
 
         payload = jsonlib.write(json)
         return payload
-
-class Logger(BrowserView):
-
-    def __call__(self):
-        adapter = IPersistentLogger(self.context)
-        data = {}
-        body = self.request.get('BODY')
-        if body:
-            body_unicode = self.request.get('BODY').decode('utf-8')
-            data = json.loads(body_unicode)
-            if data:
-                error = data.get('error', u'Unspezified Error')
-                details = data.get('details', u'NO DETAILS')
-                adapter.log(error, level='error', details=details)
-                data['message'] = 'Logentry saved'
-        data['message'] = 'Error reading logentry'
-        return jsonlib.write(data)

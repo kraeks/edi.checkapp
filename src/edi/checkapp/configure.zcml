@@ -119,11 +119,4 @@
       permission="zope2.View"
       />
 
-   <browser:page
-      name="logger"
-      for="*"
-      class=".changedata.Logger"
-      permission="zope2.View"
-      />
-
 </configure>
