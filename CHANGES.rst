@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.0.pwa.dev (unreleased)
-------------------------
+1.1 (2022-11-07)
+----------------
 
 - Nothing changed yet.
 
