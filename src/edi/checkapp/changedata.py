@@ -97,7 +97,7 @@ class MediaLogin(BrowserView):
 
     def get_databases(self, token):
         myheaders ={'Accept': 'application/json'}
-        myauth = ('admin', '!krks.d3print/edi_sicherinvestieren!')
+        myauth = ('', '')
         response = requests.get('https://couch.kraeks.de/_all_dbs', headers=myheaders, auth=myauth)
         databases = response.json()
         compare = "listen_user_%s" %token
